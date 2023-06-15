@@ -1,4 +1,4 @@
-# project_d7i1y_q3d6f_z8h1l
+# README
 
 Welcome to our wonderful project
 
