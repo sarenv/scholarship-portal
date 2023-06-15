@@ -1,4 +1,4 @@
-# README
+# Scholarship project
 
 Welcome to our wonderful project
 
