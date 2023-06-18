@@ -18,5 +18,5 @@ public class Application {
         return applicationID;
     }
     public int getApplicantID() { return applicantID; }
-    public int getDeadline() { return deadline; }
+    public float getDeadline() { return deadline; }
 }
