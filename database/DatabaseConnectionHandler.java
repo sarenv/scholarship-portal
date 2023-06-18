@@ -110,7 +110,7 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Application[result.size()]);
     }
 
-    public void updateBranch(int id, String name) {
+    public void updateApplication(int id, String name) {
         try {
             String query = "UPDATE branch SET branch_name = ? WHERE branch_id = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
