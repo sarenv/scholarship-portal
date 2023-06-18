@@ -106,7 +106,7 @@ public class DatabaseConnectionHandler {
 
     public void updateApplication(int id, String date) {
         try {
-            String query = "UPDATE application SET deadline = ? WHERE applicationID = ?";
+            String query = "UPDATE application SET deadline = ? WHERE ApplicationID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setString(3, date);
 
@@ -133,10 +133,10 @@ public class DatabaseConnectionHandler {
     }
 
     public void databaseSetup() {
-        dropBranchTableIfExists();
+        dropApplicationTableIfExists();
 
         try {
-            String query = "CREATE TABLE branch (branch_id integer PRIMARY KEY, branch_name varchar2(20) not null, branch_addr varchar2(50), branch_city varchar2(20) not null, branch_phone integer)";
+            String query = "CREATE TABLE application (ApplicationID integer PRIMARY KEY, ApplicantID varchar2(20) not null, branch_addr varchar2(50), branch_city varchar2(20) not null, branch_phone integer)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
@@ -151,15 +151,15 @@ public class DatabaseConnectionHandler {
         insertBranch(branch2);
     }
 
-    private void dropBranchTableIfExists() {
+    private void dropApplicationTableIfExists() {
         try {
             String query = "select table_name from user_tables";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                if(rs.getString(1).toLowerCase().equals("branch")) {
-                    ps.execute("DROP TABLE branch");
+                if(rs.getString(1).toLowerCase().equals("application")) {
+                    ps.execute("DROP TABLE application");
                     break;
                 }
             }
