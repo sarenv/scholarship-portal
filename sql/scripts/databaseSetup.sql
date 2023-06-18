@@ -13,8 +13,8 @@ CREATE TABLE Applicant
 CREATE TABLE Application
 (
     ApplicationID INTEGER,
-    deadline      DATE,
     ApplicantID   INTEGER,
+    deadline      DATE,
     PRIMARY KEY (ApplicationID),
     FOREIGN KEY (ApplicantID)
         REFERENCES Applicant (ApplicantID)
