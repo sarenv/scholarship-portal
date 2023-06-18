@@ -6,9 +6,9 @@ package project_d7i1y_q3d6f_z8h1l.model;
 public class Application {
     private final int applicationID;
     private final int applicantID;
-    private final float deadline; // no date
+    private final String deadline; // no date
 
-    public Application(int applicationID, int applicantID, float deadline) {
+    public Application(int applicationID, int applicantID, String deadline) {
         this.applicationID = applicationID;
         this.applicantID = applicantID;
         this.deadline = deadline;
@@ -18,5 +18,5 @@ public class Application {
         return applicationID;
     }
     public int getApplicantID() { return applicantID; }
-    public float getDeadline() { return deadline; }
+    public String getDeadline() { return deadline; }
 }

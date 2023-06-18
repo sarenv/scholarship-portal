@@ -3,10 +3,10 @@ package model;
 public class Renewable {
     private final int scholarshipID;
     private final int amount;
-    private final float dateOfRenewal;
+    private final String dateOfRenewal;
     private final int donorID;
 
-    public Renewable(int scholarshipID, int amount, float dateOfRenewal, int donorID) {
+    public Renewable(int scholarshipID, int amount, String dateOfRenewal, int donorID) {
         this.scholarshipID = scholarshipID;
         this.amount = amount;
         this.dateOfRenewal = dateOfRenewal;
@@ -21,7 +21,7 @@ public class Renewable {
         return amount;
     }
 
-    public float getDateOfRenewal() {
+    public String getDateOfRenewal() {
         return dateOfRenewal;
     }
 
