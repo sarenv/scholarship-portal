@@ -9,7 +9,7 @@ import java.sql.Date;
 import java.util.*;
 
 // see https://github.com/flynn-buc/PrintablePreparedStatement for how to use this class
-// CODE  FROM: https://discord.com/channels/@me/1108494533467050154/1120096635553329333
+// CODE FROM: https://discord.com/channels/@me/1108494533467050154/1120096635553329333
 public class PrintablePreparedStatement implements PreparedStatement {
 
     private final List<String> queryStrList;
