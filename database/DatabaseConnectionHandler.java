@@ -62,9 +62,9 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void insertApplication(BranchModel model) {
+    public void insertApplication(Application application) {
         try {
-            String query = "INSERT INTO branch VALUES (?,?,?,?,?)";
+            String query = "INSERT INTO application VALUES (?,?,?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setInt(1, model.getId());
             ps.setString(2, model.getName());

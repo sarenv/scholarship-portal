@@ -9,7 +9,7 @@ public class SelectionCriteria {
     private final double GPA;
     private final int familyIncome;
 
-    public Superintendent(int criteriaID, String major, double GPA, int familyIncome) {
+    public SelectionCriteria(int criteriaID, String major, double GPA, int familyIncome) {
         this.criteriaID = criteriaID;
         this.major = major;
         this.GPA = GPA;
@@ -22,8 +22,8 @@ public class SelectionCriteria {
     public String getMajor() {
         return major;
     }
-    public String getGPA() {
+    public double getGPA() {
         return GPA;
     }
-    public String getFamilyIncome() { return familyIncome; }
+    public int getFamilyIncome() { return familyIncome; }
 }
