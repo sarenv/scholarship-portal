@@ -87,7 +87,7 @@ public class DatabaseConnectionHandler {
     }
 
     public Application[] getApplicationInfo() {
-        ArrayList<Application> result = new ArrayList<BranchModel>();
+        ArrayList<Application> result = new ArrayList<Application>();
 
         try {
             String query = "SELECT * FROM Application";
@@ -112,7 +112,7 @@ public class DatabaseConnectionHandler {
 
     public void updateApplication(int id, String name) {
         try {
-            String query = "UPDATE branch SET branch_name = ? WHERE branch_id = ?";
+            String query = "UPDATE application SET branch_name = ? WHERE branch_id = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setString(1, name);
             ps.setInt(2, id);
