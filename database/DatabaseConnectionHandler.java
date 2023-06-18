@@ -136,7 +136,7 @@ public class DatabaseConnectionHandler {
         dropApplicationTableIfExists();
 
         try {
-            String query = "CREATE TABLE application (ApplicationID integer PRIMARY KEY, ApplicantID varchar2(20) not null, branch_addr varchar2(50), branch_city varchar2(20) not null, branch_phone integer)";
+            String query = "CREATE TABLE application (ApplicationID integer PRIMARY KEY, ApplicantID integer, deadline Date, FOREIGN KEY (ApplicantID) REFERENCES  Applicant(ApplicantID) ON DELETE CASCADE)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
