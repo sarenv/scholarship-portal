@@ -64,17 +64,11 @@ public class DatabaseConnectionHandler {
 
     public void insertApplication(Application application) {
         try {
-            String query = "INSERT INTO application VALUES (?,?,?,?,?)";
+            String query = "INSERT INTO application VALUES (?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, model.getId());
-            ps.setString(2, model.getName());
-            ps.setString(3, model.getAddress());
-            ps.setString(4, model.getCity());
-            if (model.getPhoneNumber() == 0) {
-                ps.setNull(5, java.sql.Types.INTEGER);
-            } else {
-                ps.setInt(5, model.getPhoneNumber());
-            }
+            ps.setInt(1, Application.getApplicationID());
+            ps.setString(2, Application.getApplicantID());
+            ps.setString(3, Application.getDeadline());
 
             ps.executeUpdate();
             connection.commit();
