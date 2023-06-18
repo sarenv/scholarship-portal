@@ -86,20 +86,18 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public BranchModel[] getBranchInfo() {
-        ArrayList<BranchModel> result = new ArrayList<BranchModel>();
+    public Application[] getApplicationInfo() {
+        ArrayList<Application> result = new ArrayList<BranchModel>();
 
         try {
-            String query = "SELECT * FROM branch";
+            String query = "SELECT * FROM Application";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                BranchModel model = new BranchModel(rs.getString("branch_addr"),
-                        rs.getString("branch_city"),
-                        rs.getInt("branch_id"),
-                        rs.getString("branch_name"),
-                        rs.getInt("branch_phone"));
+                Application model = new Application(rs.getInt("applicationID"),
+                        rs.getInt("applicantID"),
+                        rs.getString("deadline"));
                 result.add(model);
             }
 
@@ -109,7 +107,7 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
 
-        return result.toArray(new BranchModel[result.size()]);
+        return result.toArray(new Application[result.size()]);
     }
 
     public void updateBranch(int id, String name) {
