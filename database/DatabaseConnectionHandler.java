@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.ubc.cs304.model.BranchModel;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
@@ -128,10 +129,17 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void findAllApplied() {
+    public List<Integer> findAllApplied() {
+        List<Integer> res = new ArrayList<>();
         try {
             String query = "SELECT ApplicantID FROM Applicant APP WHERE EXISTS (SELECT A.ApplicantID FROM Application A WHERE APP.ApplicantID = A.ApplicantID)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int temp = rs.getInt("ApplicantID");
+                res.append(temp);
+            }
 
             connection.commit();
 
@@ -140,6 +148,9 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();
         }
+
+        return res;
+
     }
 
 
