@@ -134,11 +134,11 @@ INSERT   INTO Applicant VALUES (55555, 'Michael', 'Michaels', 'mmichaels@ubc.ca'
 INSERT   INTO Applicant VALUES (98452, 'Elizabeth', 'Queen', 'lizzie@ubristol.uk', 'University of Bristol', 4.20);
 INSERT   INTO Applicant VALUES (12345, 'Seuss', 'Doctor', 'heisadoctor@uvic.ca', 'University of Victoria', 3.52);
 
--- INSERT INTO Application VALUES (69421,12348, 29-03-2021);
--- INSERT INTO Application VALUES(11111,12348, 08-09-2020);
--- INSERT INTO Application VALUES(90002,55555, 31-01-2022);
--- INSERT INTO Application VALUES(67492,98452, 02-04-2023);
--- INSERT INTO Application VALUES(96477,45636, 15-11-2021);
+INSERT INTO Application VALUES (69421, 12348, TO_DATE('29/03/2021','dd/mm/yyyy'));
+INSERT INTO Application VALUES(11111,12348, TO_DATE('08/09/20','dd/mm/yyyy'));
+INSERT INTO Application VALUES(90002,55555, TO_DATE('31/01/22','dd/mm/yyyy'));
+INSERT INTO Application VALUES(67492,98452, TO_DATE('02/04/23','dd/mm/yyyy'));
+INSERT INTO Application VALUES(96477,45636, TO_DATE('15/11/21','dd/mm/yyyy'));
 
 INSERT   INTO Donor VALUES (1000);
 INSERT   INTO Donor VALUES(1001);
@@ -147,19 +147,17 @@ INSERT   INTO Donor VALUES(1003);
 INSERT  INTO Donor VALUES(1004);
 
 
--- INSERT INTO OneTime VALUES (178904, 1001, 1000000);
--- INSERT INTO OneTime VALUES(236049, 1001, 2000000);
--- INSERT INTO OneTime VALUES(306946, 1003, 1000000);
--- INSERT INTO OneTime VALUES(405069, 1003, 500000);
--- INSERT INTO OneTime VALUES(507968, 1004, 500000);
+INSERT INTO OneTime VALUES (178904, 1000000,1001);
+INSERT INTO OneTime VALUES(236049, 2000000,1001);
+INSERT INTO OneTime VALUES(306946,  1000000,1003);
+INSERT INTO OneTime VALUES(405069,  500000,1003);
+INSERT INTO OneTime VALUES(507968, 500000,1004);
 
--- INSERT ALL
---     INTO Renewable VALUES (200358, 1002, 5000, 09/04)
---     INTO Renewable VALUES(200438,1002, 10000, 09/04)
---     INTO Renewable VALUES(222118,1002, 20000, 17/02)
---     INTO Renewable VALUES(500332,1001, 25000, 31/01)
---     INTO Renewable VALUES(653453,1000, 1000000, 25/05)
--- SELECT 1 FROM dual;
+INSERT INTO Renewable VALUES (200358, 5000, TO_DATE('09/04','dd/mm'),1002);
+INSERT INTO Renewable VALUES(200438,10000, TO_DATE('09/04','dd/mm'),1002);
+INSERT INTO Renewable VALUES(222118, 20000, TO_DATE('17/02','dd/mm'),1001);
+INSERT INTO Renewable VALUES(500332, 25000, TO_DATE('31/01','dd/mm'),1002);
+INSERT INTO Renewable VALUES(653453, 1000000, TO_DATE('25/05','dd/mm'),1000);
 
 -- INSERT INTO AppliesTo VALUES (69421, 200438, 12348, 1002);
 -- INSERT INTO AppliesTo VALUES(11111,405069,12348,1003);
@@ -168,11 +166,11 @@ INSERT  INTO Donor VALUES(1004);
 -- INSERT INTO AppliesTo VALUES(67492,222118,45636,1002);
 
 
--- INSERT   INTO SelectionCriteria VALUES (001, 'Computer Science', 3.20, 30000);
--- INSERT  INTO SelectionCriteria VALUES(002, 'Computer Science', 4.00, NULL);
--- INSERT INTO SelectionCriteria VALUES(003, 'Accounting', 3.00, NULL);
--- INSERT  INTO SelectionCriteria VALUES(004, 'History', 2.40, 10000);
--- INSERT  INTO SelectionCriteria VALUES(011, 'Political Science', 4.0, NULL);
+INSERT   INTO SelectionCriteria VALUES (001, 3.20, 'Computer Science', 30000);
+INSERT  INTO SelectionCriteria VALUES(002, 4.00, 'Computer Science', NULL);
+INSERT INTO SelectionCriteria VALUES(003,  3.00,'Accounting', NULL);
+INSERT  INTO SelectionCriteria VALUES(004,  2.40,'History', 10000);
+INSERT  INTO SelectionCriteria VALUES(011,  4.0,'Political Science', NULL);
 
 INSERT INTO ScholarshipCommittee VALUES (123);
 INSERT INTO ScholarshipCommittee VALUES (234);
@@ -187,18 +185,18 @@ INSERT INTO Superintendent VALUES (04, 'Jon', 'Jackson');
 INSERT INTO Superintendent VALUES(05, 'Jill', 'Jilly');
 INSERT  INTO Superintendent VALUES (06, 'Sarah', 'Jones');
 
--- INSERT INTO ReferenceLetter VALUES (29568, 69421, 'Bob Wales', 'whales@faculty.uwales.uk', 'University of Wales', 'Professor');
--- INSERT INTO ReferenceLetter VALUES(40539, 11111, 'Monica Nguyen', 'monican@faculty.britu.uk' , 'Britain University', 'Professor');
--- INSERT INTO ReferenceLetter VALUES(65043, 90002, 'Tom Cat', 'ihatejerry@cat.hollywoodcol.us', 'Hollywood College', 'Housecat');
--- INSERT INTO ReferenceLetter VALUES(85968, 67492, 'Sam Lee', 'leevemealone@stu.socal.us', 'University of Southern California', 'Student');
--- INSERT INTO ReferenceLetter VALUES(92045, 96477, 'George Bay', 'baywatch@dean.georgetown.us', 'Georgetown University', 'Dean');
+INSERT INTO ReferenceLetter VALUES (29568, 69421, 'Bob Wales', 'whales@faculty.uwales.uk', 'University of Wales', 'Professor');
+INSERT INTO ReferenceLetter VALUES(40539, 11111, 'Monica Nguyen', 'monican@faculty.britu.uk' , 'Britain University', 'Professor');
+INSERT INTO ReferenceLetter VALUES(65043, 90002, 'Tom Cat', 'ihatejerry@cat.hollywoodcol.us', 'Hollywood College', 'Housecat');
+INSERT INTO ReferenceLetter VALUES(85968, 67492, 'Sam Lee', 'leevemealone@stu.socal.us', 'University of Southern California', 'Student');
+INSERT INTO ReferenceLetter VALUES(92045, 96477, 'George Bay', 'baywatch@dean.georgetown.us', 'Georgetown University', 'Dean');
 
---
--- INSERT INTO Evaluates VALUES (69421, 123, 'accepted');
--- INSERT INTO Evaluates VALUES (11111, 234, 'accepted');
--- INSERT  INTO Evaluates VALUES (90002, 345, 'declined');
--- INSERT  INTO Evaluates VALUES (67492, 456, 'accepted');
--- INSERT INTO Evaluates VALUES (96477, 567, 'declined');
+
+INSERT INTO Evaluates VALUES (69421, 123, 'accepted');
+INSERT INTO Evaluates VALUES (11111, 234, 'accepted');
+INSERT  INTO Evaluates VALUES (90002, 345, 'declined');
+INSERT  INTO Evaluates VALUES (67492, 456, 'accepted');
+INSERT INTO Evaluates VALUES (96477, 567, 'declined');
 
 
 
