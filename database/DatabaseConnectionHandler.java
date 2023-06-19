@@ -105,15 +105,18 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Application[result.size()]);
     }
 
-    public void updateApplication(int id, String date) {
+    public void updateSelectionCriteria(int id, float gpa, String maj, int fi) {
         try {
-            String query = "UPDATE application SET deadline = ? WHERE ApplicationID = ?";
+            String query = "UPDATE SelectionCriteria SET minimumGPA = ? SET major = ? SET familyIncome = ?  WHERE criteriaID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(3, date);
+            ps.setFloat(1, gpa);
+            ps.setString(2, maj);
+            ps.setInt(3, fi);
+            ps.setInt(4, id);
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
-                System.out.println(WARNING_TAG + " Application " + id + " does not exist!");
+                System.out.println(WARNING_TAG + " SelectionCriteria " + id + " does not exist!");
             }
 
             connection.commit();
@@ -137,7 +140,7 @@ public class DatabaseConnectionHandler {
         dropApplicationTableIfExists();
 
         try {
-            String query = "CREATE TABLE application (ApplicationID integer PRIMARY KEY, ApplicantID varchar2(20) not null, branch_addr varchar2(50), branch_city varchar2(20) not null, branch_phone integer)";
+            String query = "CREATE TABLE application (ApplicationID integer PRIMARY KEY, ApplicantID integer, deadline Date, FOREIGN KEY (ApplicantID) REFERENCES  Applicant(ApplicantID) ON DELETE CASCADE)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
