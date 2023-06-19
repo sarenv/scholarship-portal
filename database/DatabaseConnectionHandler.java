@@ -105,11 +105,14 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Application[result.size()]);
     }
 
-    public void updateSelectionCriteria(int id, String date) {
+    public void updateSelectionCriteria(int id, float gpa, String maj, int fi) {
         try {
             String query = "UPDATE SelectionCriteria SET minimumGPA = ? SET major = ? SET familyIncome = ?  WHERE criteriaID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(3, date);
+            ps.setFloat(1, gpa);
+            ps.setString(2, maj);
+            ps.setInt(3, fi);
+            ps.setInt(4, id);
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {

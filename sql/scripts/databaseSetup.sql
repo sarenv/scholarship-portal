@@ -100,7 +100,7 @@ CREATE TABLE SelectionCriteria
     criteriaID   INTEGER,
     minimumGPA   FLOAT,
     major        VARCHAR(40),
-    familyIncome VARCHAR(40),
+    familyIncome INTEGER,
     PRIMARY KEY (criteriaID)
 );
 
