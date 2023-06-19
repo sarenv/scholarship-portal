@@ -73,6 +73,8 @@ CREATE TABLE OneTime
             ON DELETE CASCADE,
     CONSTRAINT onetime_type_check CHECK (type = 'OneTime')
 );
+
+
 CREATE TABLE AppliesTo
 (
     ApplicationID INTEGER,
@@ -100,7 +102,7 @@ CREATE TABLE SelectionCriteria
     criteriaID   INTEGER,
     minimumGPA   FLOAT,
     major        VARCHAR(40),
-    familyIncome VARCHAR(40),
+    familyIncome INTEGER,
     PRIMARY KEY (criteriaID)
 );
 
