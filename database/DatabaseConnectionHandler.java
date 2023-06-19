@@ -64,6 +64,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    // INSERT QUERY
     public void insertApplication(Application application) {
         try {
             String query = "INSERT INTO application VALUES (?,?,?)";
@@ -106,6 +107,7 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Application[result.size()]);
     }
 
+    // UPDATE QUERY
     public void updateSelectionCriteria(int id, float gpa, String maj, int fi) {
         try {
             String query = "UPDATE SelectionCriteria SET minimumGPA = ?, major = ?, familyIncome = ?  WHERE criteriaID = ?";
@@ -129,6 +131,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
+<<<<<<< HEAD
     public List<Integer> findAllApplied() {
         List<Integer> res = new ArrayList<>();
         try {
@@ -152,6 +155,10 @@ public class DatabaseConnectionHandler {
         return res;
 
     }
+=======
+    // JOIN QUERY
+    public void find
+>>>>>>> 6f7645541f052a7ab1ce1ede9ff242024425e113
 
 
     private void rollbackConnection() {
