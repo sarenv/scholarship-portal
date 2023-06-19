@@ -105,15 +105,15 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Application[result.size()]);
     }
 
-    public void updateApplication(int id, String date) {
+    public void updateSelectionCriteria(int id, String date) {
         try {
-            String query = "UPDATE application SET deadline = ? WHERE ApplicationID = ?";
+            String query = "UPDATE SelectionCriteria SET minimumGPA = ? SET major = ? SET familyIncome = ?  WHERE criteriaID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setString(3, date);
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
-                System.out.println(WARNING_TAG + " Application " + id + " does not exist!");
+                System.out.println(WARNING_TAG + " SelectionCriteria " + id + " does not exist!");
             }
 
             connection.commit();
