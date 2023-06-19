@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import ca.ubc.cs304.model.BranchModel;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
+import project_d7i1y_q3d6f_z8h1l.model.Application;
 
 /**
  * This class handles all database related transactions
@@ -149,7 +150,8 @@ public class DatabaseConnectionHandler {
 //
 //        BranchModel branch2 = new BranchModel("123 Coco Ave", "Vancouver", 2, "Second Branch", 1234568);
 //        insertBranch(branch2);
-    }
+
+        
 
     private void dropApplicationTableIfExists() {
         try {
