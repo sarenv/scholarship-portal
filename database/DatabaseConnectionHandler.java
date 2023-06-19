@@ -43,6 +43,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    // DELETE QUERY
     public void deleteApplication(int applicationID) {
         try {
             String query = "DELETE FROM application WHERE applicationID = ?";
@@ -63,6 +64,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    // INSERT QUERY
     public void insertApplication(Application application) {
         try {
             String query = "INSERT INTO application VALUES (?,?,?)";
@@ -103,6 +105,7 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Application[result.size()]);
     }
 
+    // UPDATE QUERY
     public void updateSelectionCriteria(int id, float gpa, String maj, int fi) {
         try {
             String query = "UPDATE SelectionCriteria SET minimumGPA = ?, SET major = ?, SET familyIncome = ?,  WHERE criteriaID = ?";
