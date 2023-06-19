@@ -107,7 +107,7 @@ public class DatabaseConnectionHandler {
 
     public void updateSelectionCriteria(int id, float gpa, String maj, int fi) {
         try {
-            String query = "UPDATE SelectionCriteria SET minimumGPA = ? SET major = ? SET familyIncome = ?  WHERE criteriaID = ?";
+            String query = "UPDATE SelectionCriteria SET minimumGPA = ?, major = ?, familyIncome = ?  WHERE criteriaID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setFloat(1, gpa);
             ps.setString(2, maj);
