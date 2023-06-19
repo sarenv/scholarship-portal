@@ -43,7 +43,6 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    // DELETE QUERY
     public void deleteApplication(int applicationID) {
         try {
             String query = "DELETE FROM application WHERE applicationID = ?";
@@ -64,7 +63,6 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    // INSERT QUERY
     public void insertApplication(Application application) {
         try {
             String query = "INSERT INTO application VALUES (?,?,?)";
@@ -83,7 +81,6 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    // APPLICATION METHODS
     public Application[] getApplicationInfo() {
         ArrayList<Application> result = new ArrayList<Application>();
 
@@ -108,20 +105,18 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Application[result.size()]);
     }
 
-    // SELECTION QUERY
+    // PROJECTION QUERY
+//    public Application[] projectionTable(String rela)
 
-
-
-    // UPDATE QUERY
-    public void updateApplication(int id, String date) {
+    public void updateSelectionCriteria(int id, String date) {
         try {
-            String query = "UPDATE application SET deadline = ? WHERE applicationID = ?";
+            String query = "UPDATE SelectionCriteria SET minimumGPA = ? SET major = ? SET familyIncome = ?  WHERE criteriaID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setString(3, date);
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
-                System.out.println(WARNING_TAG + " Application " + id + " does not exist!");
+                System.out.println(WARNING_TAG + " SelectionCriteria " + id + " does not exist!");
             }
 
             connection.commit();
@@ -133,23 +128,6 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    // PROJECTION QUERY
-
-    // JOIN QUERY
-
-    // AGGREGATION WITH GROUP BY QUERY
-
-    // AGGREGATION WITH HAVING QUERY
-
-    // NESTED AGGREGATION WITH GROUP BY QUERY
-
-    // DIVISION QUERY
-
-    // POPULATING TABLES
-    public boolean
-
-
-    // REQUIRED METHODS BELOW - DON'T DELETE
     private void rollbackConnection() {
         try  {
             connection.rollback();
@@ -162,7 +140,7 @@ public class DatabaseConnectionHandler {
         dropApplicationTableIfExists();
 
         try {
-            String query = "CREATE TABLE application (ApplicationID integer PRIMARY KEY, ApplicantID integer, deadline date, FOREIGN KEY ApplicantID REFERENCES Applicant(ApplicantID) )";
+            String query = "CREATE TABLE application (ApplicationID integer PRIMARY KEY, ApplicantID integer, deadline Date, FOREIGN KEY (ApplicantID) REFERENCES  Applicant(ApplicantID) ON DELETE CASCADE)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
@@ -178,15 +156,15 @@ public class DatabaseConnectionHandler {
 
         
 
-    private void dropBranchTableIfExists() {
+    private void dropApplicationTableIfExists() {
         try {
             String query = "select table_name from user_tables";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                if(rs.getString(1).toLowerCase().equals("branch")) {
-                    ps.execute("DROP TABLE branch");
+                if(rs.getString(1).toLowerCase().equals("application")) {
+                    ps.execute("DROP TABLE application");
                     break;
                 }
             }

@@ -28,44 +28,63 @@ CREATE TABLE Donor
 );
 
 
-CREATE TABLE Renewable
+CREATE TABLE  Scholarship
 (
     scholarshipID INTEGER,
     amount        INTEGER,
-    dateOfRenewal DATE,
-    donorID       INTEGER NOT NULL,
+    donorID       INTEGER,
+    type          VARCHAR(20),
     PRIMARY KEY (scholarshipID),
     FOREIGN KEY (donorID)
         REFERENCES Donor (donorID)
-            ON DELETE CASCADE
+            ON DELETE  CASCADE
+);
+
+
+CREATE TABLE Renewable
+(
+    scholarshipID INTEGER NOT NULL,
+    amount        INTEGER,
+    dateOfRenewal DATE,
+    donorID       INTEGER,
+    type VARCHAR(20) DEFAULT  'Renewable',
+    PRIMARY KEY (scholarshipID),
+    FOREIGN KEY (scholarshipID)
+        REFERENCES  Scholarship
+        ON DELETE CASCADE,
+    FOREIGN KEY (donorID)
+        REFERENCES  Donor
+            ON DELETE CASCADE,
+    CONSTRAINT renewable_type_check CHECK (type = 'Renewable')
 );
 
 CREATE TABLE OneTime
 (
-    scholarshipID INTEGER,
+    scholarshipID INTEGER NOT NULL,
     amount        INTEGER,
-    donorID       INTEGER NOT NULL,
+    donorID       INTEGER,
+    type VARCHAR(20) DEFAULT  'OneTime',
     PRIMARY KEY (scholarshipID),
+    FOREIGN KEY (scholarshipID)
+        REFERENCES  Scholarship
+            ON DELETE CASCADE,
     FOREIGN KEY (donorID)
-        REFERENCES Donor (donorID)
-            ON DELETE CASCADE
+        REFERENCES  Donor
+            ON DELETE CASCADE,
+    CONSTRAINT onetime_type_check CHECK (type = 'OneTime')
 );
-
 CREATE TABLE AppliesTo
 (
     ApplicationID INTEGER,
-    ScholarshipID INTEGER,
+    scholarshipID INTEGER,
     ApplicantID   INTEGER,
     donorID       INTEGER,
-    PRIMARY KEY (ApplicationID, ScholarshipID, ApplicantID, donorID),
+    PRIMARY KEY (ApplicationID, scholarshipID, ApplicantID, donorID),
     FOREIGN KEY (ApplicationID)
         REFERENCES Application (ApplicationID)
         ON DELETE CASCADE,
-    FOREIGN KEY (ScholarshipID)
-        REFERENCES OneTime (ScholarshipID)
-        ON DELETE CASCADE,
-    FOREIGN KEY (ScholarshipID)
-        REFERENCES Renewable (ScholarshipID)
+    FOREIGN KEY (scholarshipID)
+        REFERENCES Scholarship
         ON DELETE CASCADE,
     FOREIGN KEY (ApplicantID)
         REFERENCES Applicant (ApplicantID)
@@ -128,7 +147,7 @@ CREATE TABLE Evaluates
 );
 
 
-INSERT INTO Applicant VALUES (12348, 'Jessica', 'Jones', 'jjones@ubc.ca', 'University of British Columbia', 13.69);
+INSERT INTO Applicant VALUES (12348, 'Jessica', 'Jones', 'jjones@ubc.ca', 'University of British Columbia', 3.69);
 INSERT   INTO Applicant VALUES (45636, 'Emily', 'In Paris', 'ouibaguette@parisu.fr', 'Paris University', 4.00);
 INSERT   INTO Applicant VALUES (55555, 'Michael', 'Michaels', 'mmichaels@ubc.ca', 'University of British Columbia', 2.41);
 INSERT   INTO Applicant VALUES (98452, 'Elizabeth', 'Queen', 'lizzie@ubristol.uk', 'University of Bristol', 4.20);
@@ -144,26 +163,37 @@ INSERT   INTO Donor VALUES (1000);
 INSERT   INTO Donor VALUES(1001);
 INSERT   INTO Donor VALUES(1002);
 INSERT   INTO Donor VALUES(1003);
-INSERT  INTO Donor VALUES(1004);
+INSERT   INTO Donor VALUES(1004);
+
+INSERT INTO Scholarship VALUES (178904, 1000000,1001,'OneTime');
+INSERT INTO Scholarship VALUES(236049, 2000000,1001,'OneTime');
+INSERT INTO Scholarship VALUES(306946,  1000000,1003,'OneTime');
+INSERT INTO Scholarship VALUES(405069,  500000,1003,'OneTime');
+INSERT INTO Scholarship VALUES(507968, 500000,1004,'OneTime');
+INSERT INTO Scholarship VALUES (200358, 5000, 1002,'Renewable');
+INSERT INTO Scholarship VALUES(200438,10000, 1002,'Renewable');
+INSERT INTO Scholarship VALUES(222118, 20000, 1001,'Renewable');
+INSERT INTO Scholarship VALUES(500332, 25000,1002,'Renewable');
+INSERT INTO Scholarship VALUES(653453, 1000000,1000,'Renewable');
 
 
-INSERT INTO OneTime VALUES (178904, 1000000,1001);
-INSERT INTO OneTime VALUES(236049, 2000000,1001);
-INSERT INTO OneTime VALUES(306946,  1000000,1003);
-INSERT INTO OneTime VALUES(405069,  500000,1003);
-INSERT INTO OneTime VALUES(507968, 500000,1004);
+-- INSERT INTO OneTime VALUES (178904, 1000000,1001,'OneTime');
+-- INSERT INTO OneTime VALUES(236049, 2000000,1001,'OneTime');
+-- INSERT INTO OneTime VALUES(306946,  1000000,1003,'OneTime');
+-- INSERT INTO OneTime VALUES(405069,  500000,1003,'OneTime');
+-- INSERT INTO OneTime VALUES(507968, 500000,1004,'OneTime');
+--
+-- INSERT INTO Renewable VALUES (200358, 5000, TO_DATE('09/04','dd/mm'),1002,'Renewable');
+-- INSERT INTO Renewable VALUES(200438,10000, TO_DATE('09/04','dd/mm'),1002,'Renewable');
+-- INSERT INTO Renewable VALUES(222118, 20000, TO_DATE('17/02','dd/mm'),1001,'Renewable');
+-- INSERT INTO Renewable VALUES(500332, 25000, TO_DATE('31/01','dd/mm'),1002,'Renewable');
+-- INSERT INTO Renewable VALUES(653453, 1000000, TO_DATE('25/05','dd/mm'),1000,'Renewable');
 
-INSERT INTO Renewable VALUES (200358, 5000, TO_DATE('09/04','dd/mm'),1002);
-INSERT INTO Renewable VALUES(200438,10000, TO_DATE('09/04','dd/mm'),1002);
-INSERT INTO Renewable VALUES(222118, 20000, TO_DATE('17/02','dd/mm'),1001);
-INSERT INTO Renewable VALUES(500332, 25000, TO_DATE('31/01','dd/mm'),1002);
-INSERT INTO Renewable VALUES(653453, 1000000, TO_DATE('25/05','dd/mm'),1000);
-
--- INSERT INTO AppliesTo VALUES (69421, 200438, 12348, 1002);
--- INSERT INTO AppliesTo VALUES(11111,405069,12348,1003);
--- INSERT INTO AppliesTo VALUES(90002,178904,98452,1004);
--- INSERT INTO AppliesTo VALUES(96477,178904,55555,1001);
--- INSERT INTO AppliesTo VALUES(67492,222118,45636,1002);
+INSERT INTO AppliesTo VALUES (69421, 200438, 12348, 1002);
+INSERT INTO AppliesTo VALUES(11111,405069,12348,1003);
+INSERT INTO AppliesTo VALUES(90002,178904,98452,1004);
+INSERT INTO AppliesTo VALUES(96477,178904,55555,1001);
+INSERT INTO AppliesTo VALUES(67492,222118,45636,1002);
 
 
 INSERT   INTO SelectionCriteria VALUES (001, 3.20, 'Computer Science', 30000);
