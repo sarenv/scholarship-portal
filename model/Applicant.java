@@ -9,9 +9,9 @@ public class Applicant {
 	private final String lastName;
 	private final String email;
 	private final String school;
-	private final double GPA; // there is no decimal
+	private final float GPA; // there is no decimal
 	
-	public Applicant(int applicantID, String firstName, String lastName, String email, String school, double GPA) {
+	public Applicant(int applicantID, String firstName, String lastName, String email, String school, float GPA) {
 		this.applicantID = applicantID;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -33,5 +33,5 @@ public class Applicant {
 
 	public String getSchool() { return school; }
 
-	public double getGPA() { return GPA; }
+	public float getGPA() { return GPA; }
 }

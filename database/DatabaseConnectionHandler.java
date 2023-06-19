@@ -90,9 +90,7 @@ public class DatabaseConnectionHandler {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                Application model = new Application(rs.getInt("applicationID"),
-                        rs.getInt("applicantID"),
-                        rs.getString("deadline"));
+                Application model = new Application(rs.getInt("applicationID"), rs.getInt("applicantID"), rs.getString("deadline"));
                 result.add(model);
             }
 
@@ -105,14 +103,14 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Application[result.size()]);
     }
 
-    // PROJECTION QUERY
-//    public Application[] projectionTable(String rela)
-
-    public void updateSelectionCriteria(int id, String date) {
+    public void updateSelectionCriteria(int id, float gpa, String maj, int fi) {
         try {
-            String query = "UPDATE SelectionCriteria SET minimumGPA = ? SET major = ? SET familyIncome = ?  WHERE criteriaID = ?";
+            String query = "UPDATE SelectionCriteria SET minimumGPA = ?, SET major = ?, SET familyIncome = ?,  WHERE criteriaID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(3, date);
+            ps.setFloat(1, gpa);
+            ps.setString(2, maj);
+            ps.setInt(3, fi);
+            ps.setInt(4, id);
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
@@ -127,6 +125,34 @@ public class DatabaseConnectionHandler {
             rollbackConnection();
         }
     }
+
+    // PROJECTION QUERY
+    // choose any number of attributes (or columns)
+    public ArrayList<String[]> projectionTable(ArrayList<String> columns, String relation) {
+        ArrayList<String[]> result = new ArrayList<>();
+
+        try {
+            String colStr = String.join(", " + columns) ;
+            String query = "SELECT " + colstr + " FROM " + relation;
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                String[] elements = new String[columns.size()]; // have an emtpy array of selected columns
+                for (int i = 0; i < columns.size(); i++) { // iterate through all the possible columns, i is the current column index
+                    elements[i] = rs.getString(columns[i]); // using the query, put the string of particular column and put it in the array of selected columns
+                }
+                result.add(elements);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return result;
+    }
+}
 
     private void rollbackConnection() {
         try  {

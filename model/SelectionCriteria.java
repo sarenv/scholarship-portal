@@ -6,10 +6,10 @@ package project_d7i1y_q3d6f_z8h1l.model;
 public class SelectionCriteria {
     private final int criteriaID;
     private final String major;
-    private final double GPA;
+    private final float GPA;
     private final int familyIncome;
 
-    public SelectionCriteria(int criteriaID, String major, double GPA, int familyIncome) {
+    public SelectionCriteria(int criteriaID, String major, float GPA, int familyIncome) {
         this.criteriaID = criteriaID;
         this.major = major;
         this.GPA = GPA;
@@ -22,7 +22,7 @@ public class SelectionCriteria {
     public String getMajor() {
         return major;
     }
-    public double getGPA() {
+    public float getGPA() {
         return GPA;
     }
     public int getFamilyIncome() { return familyIncome; }
