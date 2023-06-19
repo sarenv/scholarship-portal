@@ -42,6 +42,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    // DELETE QUERY
     public void deleteApplication(int applicationID) {
         try {
             String query = "DELETE FROM application WHERE applicationID = ?";
@@ -62,6 +63,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    // INSERT QUERY
     public void insertApplication(Application application) {
         try {
             String query = "INSERT INTO application VALUES (?,?,?)";
@@ -80,6 +82,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    // APPLICATION METHODS
     public Application[] getApplicationInfo() {
         ArrayList<Application> result = new ArrayList<Application>();
 
@@ -104,6 +107,11 @@ public class DatabaseConnectionHandler {
         return result.toArray(new Application[result.size()]);
     }
 
+    // SELECTION QUERY
+
+
+
+    // UPDATE QUERY
     public void updateApplication(int id, String date) {
         try {
             String query = "UPDATE application SET deadline = ? WHERE applicationID = ?";
@@ -124,6 +132,23 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    // PROJECTION QUERY
+
+    // JOIN QUERY
+
+    // AGGREGATION WITH GROUP BY QUERY
+
+    // AGGREGATION WITH HAVING QUERY
+
+    // NESTED AGGREGATION WITH GROUP BY QUERY
+
+    // DIVISION QUERY
+
+    // POPULATING TABLES
+    public boolean
+
+
+    // REQUIRED METHODS BELOW - DON'T DELETE
     private void rollbackConnection() {
         try  {
             connection.rollback();
@@ -144,11 +169,11 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
 
-        BranchModel branch1 = new BranchModel("123 Charming Ave", "Vancouver", 1, "First Branch", 1234567);
-        insertBranch(branch1);
-
-        BranchModel branch2 = new BranchModel("123 Coco Ave", "Vancouver", 2, "Second Branch", 1234568);
-        insertBranch(branch2);
+//        BranchModel branch1 = new BranchModel("123 Charming Ave", "Vancouver", 1, "First Branch", 1234567);
+//        insertBranch(branch1);
+//
+//        BranchModel branch2 = new BranchModel("123 Coco Ave", "Vancouver", 2, "Second Branch", 1234568);
+//        insertBranch(branch2);
     }
 
     private void dropBranchTableIfExists() {
