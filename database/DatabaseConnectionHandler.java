@@ -185,7 +185,8 @@ public class DatabaseConnectionHandler {
         }
     }
 
-
+    // Division using WHERE EXISTS
+    // Finding the applicants who submitted an application
     public List<Integer> findAllApplied() {
         List<Integer> res = new ArrayList<>();
         try {
