@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.ubc.cs304.model.BranchModel;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
@@ -140,13 +142,61 @@ public class DatabaseConnectionHandler {
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 String[] elements = new String[columns.size()]; // have an emtpy array of selected columns
                 for (int i = 0; i < columns.size(); i++) { // iterate through all the possible columns, i is the current column index
                     elements[i] = rs.getString(columns[i]); // using the query, put the string of particular column and put it in the array of selected columns
                 }
                 result.add(elements);
             }
+        }
+    }
+    // JOIN QUERY
+    public void findApplicationStatus(int applicantID) {
+        try {
+            String query = "SELECT  AT.applicantID, AC.applicationID, E.status " +
+                    "FROM Applicant AT, Application AC, EVALUATES E " +
+                    "WHERE AT.applicantID = AC.applicantID and AC.applicationID = E.applicationID and AT.applicantID = ?";
+
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
+            ps.setInt(1, applicantID);
+
+            ResultSet rs = ps.executeQuery();
+            int applicationID = 0;
+            String status = "";
+            while (rs.next()) {
+                applicationID = rs.getInt("applicationID");
+                status = rs.getString("status");
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
+
+    // Aggregation with HAVING
+    // For each major requirement that has more than one scholarship, find the minimum GPA
+    public void findMinGPAForEachMajor (int inputGPA) {
+
+        try {
+            String query = "SELECT major, MIN(minimumGPA) AS GPA " +
+                            "FROM SELECTIONCRITERIA SC " +
+                            "GROUP BY major " +
+                            "HAVING COUNT(*) > 1 AND min(MINIMUMGPA) <= ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
+            ps.setInt(1, inputGPA);
+
+            ResultSet rs = ps.executeQuery();
+            String major = "";
+            Integer GPA = 0;
+
+            while (rs.next()) {
+                    major = rs.getString("major");
+                    GPA = rs.getInt("GPA");
+            }
+
             rs.close();
             ps.close();
         } catch (SQLException e) {
@@ -155,7 +205,9 @@ public class DatabaseConnectionHandler {
 
         return result;
     }
-}
+
+    // Aggregation with GROUP BY
+
 
     // SELECTION QUERY
     // choose which table and attributes (columns) to select on + values of the specific condition
@@ -195,6 +247,33 @@ public class DatabaseConnectionHandler {
         return result;
     }
 
+
+    // Division using WHERE EXISTS
+    // Finding the applicants who submitted an application
+    public List<Integer> findAllApplied() {
+        List<Integer> res = new ArrayList<>();
+        try {
+            String query = "SELECT ApplicantID FROM Applicant APP WHERE EXISTS (SELECT A.ApplicantID FROM Application A WHERE APP.ApplicantID = A.ApplicantID)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int temp = rs.getInt("ApplicantID");
+                res.append(temp);
+            }
+
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+
+        return res;
+
+    }
+
     private void rollbackConnection() {
         try  {
             connection.rollback();
@@ -220,6 +299,7 @@ public class DatabaseConnectionHandler {
 //
 //        BranchModel branch2 = new BranchModel("123 Coco Ave", "Vancouver", 2, "Second Branch", 1234568);
 //        insertBranch(branch2);
+    }
 
         
 
