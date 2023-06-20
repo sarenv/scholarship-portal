@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.ubc.cs304.model.BranchModel;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
@@ -131,7 +133,20 @@ public class DatabaseConnectionHandler {
     }
 
     // JOIN QUERY
-    public void find
+//    public ArrayList<String> findApplicationStatus(int applicantID) {
+//        ArrayList<String> applicant = new ArrayList<String>();
+//        try {
+//            String query = "SELECT * FROM Applicant Application Evaluates, " +
+//                    "WHERE Applicant.applicantID = Application.applicantID and Application.applicationID = Evaluates.applicationID and Applicant.applicantID = ?";
+//
+//            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query));
+//            ps.setInt(1,applicantID);
+//
+//            ResultSet rs = ps.executeQuery();
+//
+//            while(rs.next()) {
+//                int id_to_add = rs.getInt(("applicantID"));
+
 
 
     private void rollbackConnection() {
