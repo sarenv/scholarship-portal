@@ -211,6 +211,31 @@ public class DatabaseConnectionHandler {
 
         }
 
+    // Aggregation with GROUP BY
+    // Finding the minimum GPA required for each major in SelectionCriteria table
+    public List<String[]> findminGPAforMajor() {
+        //List<Integer> res = new ArrayList<>();
+        try {
+            String query = "SELECT major, MIN(minimumGPA) FROM SELECTIONCRITERIA GROUP BY major";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                //int temp = rs.getInt("ApplicantID");
+                //res.append(temp);
+            }
+
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+
+        //return res;
+
+    }
     private void rollbackConnection() {
         try  {
             connection.rollback();
