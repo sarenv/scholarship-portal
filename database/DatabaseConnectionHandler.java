@@ -133,19 +133,59 @@ public class DatabaseConnectionHandler {
     }
 
     // JOIN QUERY
-//    public ArrayList<String> findApplicationStatus(int applicantID) {
-//        ArrayList<String> applicant = new ArrayList<String>();
-//        try {
-//            String query = "SELECT * FROM Applicant Application Evaluates, " +
-//                    "WHERE Applicant.applicantID = Application.applicantID and Application.applicationID = Evaluates.applicationID and Applicant.applicantID = ?";
-//
-//            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query));
-//            ps.setInt(1,applicantID);
-//
-//            ResultSet rs = ps.executeQuery();
-//
-//            while(rs.next()) {
-//                int id_to_add = rs.getInt(("applicantID"));
+    public void findApplicationStatus(int applicantID) {
+        try {
+            String query = "SELECT  AT.applicantID, AC.applicationID, E.status " +
+                    "FROM Applicant AT, Application AC, EVALUATES E " +
+                    "WHERE AT.applicantID = AC.applicantID and AC.applicationID = E.applicationID and AT.applicantID = ?";
+
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
+            ps.setInt(1, applicantID);
+
+            ResultSet rs = ps.executeQuery();
+            int applicationID = 0;
+            String status = "";
+            while (rs.next()) {
+                applicationID = rs.getInt("applicationID");
+                status = rs.getString("status");
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
+
+    // Aggregation with HAVING
+    // For each major requirement that has more than one scholarship, find the minimum GPA
+    public void findMinGPAForEachMajor (int inputGPA) {
+
+        try {
+            String query = "SELECT major, MIN(minimumGPA) AS GPA " +
+                            "FROM SELECTIONCRITERIA SC " +
+                            "GROUP BY major " +
+                            "HAVING COUNT(*) > 1 AND min(MINIMUMGPA) <= ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
+            ps.setInt(1, inputGPA);
+
+            ResultSet rs = ps.executeQuery();
+            String major = "";
+            Integer GPA = 0;
+
+            while (rs.next()) {
+                    major = rs.getString("major");
+                    GPA = rs.getInt("GPA");
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
+
+
 
 
 
