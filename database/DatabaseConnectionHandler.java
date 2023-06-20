@@ -186,8 +186,29 @@ public class DatabaseConnectionHandler {
     }
 
 
+    public List<Integer> findAllApplied() {
+        List<Integer> res = new ArrayList<>();
+        try {
+            String query = "SELECT ApplicantID FROM Applicant APP WHERE EXISTS (SELECT A.ApplicantID FROM Application A WHERE APP.ApplicantID = A.ApplicantID)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int temp = rs.getInt("ApplicantID");
+                res.append(temp);
+            }
 
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+
+        return res;
+
+        }
 
     private void rollbackConnection() {
         try  {
