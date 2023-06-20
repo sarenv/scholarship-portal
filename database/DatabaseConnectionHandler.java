@@ -130,12 +130,12 @@ public class DatabaseConnectionHandler {
     }
 
     // PROJECTION QUERY
-    // choose any number of attributes (or columns)
+    // choose any number of attributes (or columns) from a table (or relation)
     public ArrayList<String[]> projectionTable(ArrayList<String> columns, String relation) {
         ArrayList<String[]> result = new ArrayList<>();
 
         try {
-            String colStr = String.join(", " + columns) ;
+            String colStr = String.join(", " + columns); // different types of columns
             String query = "SELECT " + colstr + " FROM " + relation;
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
@@ -156,6 +156,44 @@ public class DatabaseConnectionHandler {
         return result;
     }
 }
+
+    // SELECTION QUERY
+    // choose which table and attributes (columns) to select on + values of the specific condition
+    public ArrayList<String[]> selectionTable(ArrayList<String> relations, ArrayList<String> columns) {
+        ArrayList<String[]> result = new ArrayList<>();
+        HashMap<String,String> map = new HashMap<>(); // need to populate the map in main function?
+
+        try {
+            StringBuilder allcolumns = new StringBuilder<>();
+            for (String column: columns) {
+                if (map.containsKey(column)) {
+                    String tablename = map.get(column); // take in the column's table
+                    allcolumns.append(tablename).append(".").append(column).append(", ");
+                }
+                if (allcolumns.length <= 1) { // if there is only one column or less to choose from, no need the commas
+                    allcolumns.delete(allcolumns.length() - 2); // u delete from the end to the last 2 spaces
+                }
+            }
+
+            String tableStr = String.join(", " + relations); // different types of tables
+            String query = "SELECT " + allcolumns + " FROM " + tableStr;
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                String[] elements = new String[columns.size()]; // have an emtpy array of selected columns
+                for (int i = 0; i < columns.size(); i++) { // iterate through all the possible columns, i is the current column index
+                    elements[i] = rs.getString(columns[i]); // using the query, put the string of particular column and put it in the array of selected columns
+                }
+                result.add(elements);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return result;
+    }
 
     private void rollbackConnection() {
         try  {
