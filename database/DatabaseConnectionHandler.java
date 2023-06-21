@@ -253,8 +253,8 @@ public class DatabaseConnectionHandler {
 
     // Division using WHERE EXISTS
     // Finding the applicants who submitted an application
-    public List<Integer> findAllApplied() {
-        List<Integer> res = new ArrayList<>();
+    public ArrayList<Integer> findAllApplied() {
+        ArrayList<Integer> res = new ArrayList<>();
         try {
             String query = "SELECT ApplicantID FROM Applicant APP WHERE EXISTS (SELECT A.ApplicantID FROM Application A WHERE APP.ApplicantID = A.ApplicantID)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -262,7 +262,7 @@ public class DatabaseConnectionHandler {
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 int temp = rs.getInt("ApplicantID");
-                res.append(temp);
+                res.add(temp);
             }
 
             connection.commit();
@@ -279,16 +279,20 @@ public class DatabaseConnectionHandler {
 
     // Aggregation with GROUP BY
     // Finding the minimum GPA required for each major in SelectionCriteria table
-    public List<String[]> findminGPAforMajor() {
-        //List<Integer> res = new ArrayList<>();
+    public ArrayList<String[]> findminGPAforMajor() {
+        ArrayList<String[]> res = new ArrayList<>();
         try {
             String query = "SELECT major, MIN(minimumGPA) FROM SELECTIONCRITERIA GROUP BY major";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                //int temp = rs.getInt("ApplicantID");
-                //res.append(temp);
+                String temp1 = rs.getString("major");
+                String temp2 = String.valueOf(rs.getInt("minimumGPA"));
+                String[] temp3 = new String[2];
+                temp3.add(temp1);
+                temp3.add(temp2);
+                res.add(temp3);
             }
 
             connection.commit();
@@ -299,23 +303,27 @@ public class DatabaseConnectionHandler {
             rollbackConnection();
         }
 
-        //return res;
+        return res;
 
     }
 
 
     // Nested Aggregation with GROUP BY
     // Finding the average GPA for each school in the Applicant table and retrieving schools where the average GPA is higher than the overall average GPA across all schools
-    public List<String[]> findAvgGPAWhereHigher() {
-        //List<Integer> res = new ArrayList<>();
+    public ArrayList<String[]> findAvgGPAWhereHigher() {
+        ArrayList<String[]> res = new ArrayList<>();
         try {
             String query = "SELECT applicantSchool, Avg(applicantGPA) FROM Applicant GROUP BY applicantSchool HAVING Avg(applicantGPA) > (SELECT Avg(applicantGPA) FROM Applicant)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                //int temp = rs.getInt("ApplicantID");
-                //res.append(temp);
+                String temp1 = rs.getString("applicantSchool");
+                String temp2 = String.valueOf(rs.getInt("applicantGPA"));
+                String[] temp3 = new String[2];
+                temp3.add(temp1);
+                temp3.add(temp2);
+                res.add(temp3);
             }
 
             connection.commit();
@@ -326,7 +334,7 @@ public class DatabaseConnectionHandler {
             rollbackConnection();
         }
 
-        //return res;
+        return res;
 
     }
 
