@@ -149,7 +149,14 @@ public class DatabaseConnectionHandler {
                 }
                 result.add(elements);
             }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+
+        return result;
     }
     // JOIN QUERY
     public void findApplicationStatus(int applicantID) {
