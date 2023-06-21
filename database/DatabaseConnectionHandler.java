@@ -138,7 +138,7 @@ public class DatabaseConnectionHandler {
 
         try {
             String colStr = String.join(", " + columns); // different types of columns
-            String query = "SELECT " + colstr + " FROM " + relation;
+            String query = "SELECT " + colStr + " FROM " + relation;
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
@@ -149,7 +149,14 @@ public class DatabaseConnectionHandler {
                 }
                 result.add(elements);
             }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+
+        return result;
     }
     // JOIN QUERY
     public void findApplicationStatus(int applicantID) {
@@ -202,11 +209,7 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
-
-        return result;
     }
-
-    // Aggregation with GROUP BY
 
 
     // SELECTION QUERY
