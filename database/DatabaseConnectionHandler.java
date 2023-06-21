@@ -159,7 +159,8 @@ public class DatabaseConnectionHandler {
         return result;
     }
     // JOIN QUERY
-    public void findApplicationStatus(int applicantID) {
+    public ArrayList<String[]> findApplicationStatus(int applicantID) {
+        ArrayList<String[]> result = new ArrayList<>();
         try {
             String query = "SELECT  AT.applicantID, AC.applicationID, E.status " +
                     "FROM Applicant AT, Application AC, EVALUATES E " +
@@ -169,11 +170,15 @@ public class DatabaseConnectionHandler {
             ps.setInt(1, applicantID);
 
             ResultSet rs = ps.executeQuery();
-            int applicationID = 0;
+            String applicationID = "";
             String status = "";
             while (rs.next()) {
-                applicationID = rs.getInt("applicationID");
+                String[] dummy = new String[2];
+                applicationID = String.valueOf(rs.getInt("applicationID"));
                 status = rs.getString("status");
+                dummy[0] = applicationID;
+                dummy[1] = status;
+                result.add(dummy);
             }
 
             rs.close();
@@ -181,12 +186,13 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+        return result;
     }
 
     // Aggregation with HAVING
     // For each major requirement that has more than one scholarship, find the minimum GPA
-    public void findMinGPAForEachMajor (int inputGPA) {
-
+    public ArrayList<String[]> findMinGPAForEachMajor (int inputGPA) {
+        ArrayList<String[]> result = new ArrayList<>();
         try {
             String query = "SELECT major, MIN(minimumGPA) AS GPA " +
                             "FROM SELECTIONCRITERIA SC " +
@@ -197,11 +203,16 @@ public class DatabaseConnectionHandler {
 
             ResultSet rs = ps.executeQuery();
             String major = "";
-            Integer GPA = 0;
+            String GPA = "";
+
 
             while (rs.next()) {
+                    String[] dummy = new String[2];
                     major = rs.getString("major");
-                    GPA = rs.getInt("GPA");
+                    GPA = String.valueOf(rs.getInt("GPA"));
+                    dummy[0] = major;
+                    dummy[1] = GPA;
+                    result.add(dummy);
             }
 
             rs.close();
@@ -209,6 +220,7 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+        return result;
     }
 
 
