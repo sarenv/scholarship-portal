@@ -138,7 +138,7 @@ public class DatabaseConnectionHandler {
 
         try {
             String colStr = String.join(", " + columns); // different types of columns
-            String query = "SELECT " + colstr + " FROM " + relation;
+            String query = "SELECT " + colStr + " FROM " + relation;
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
@@ -209,11 +209,7 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
-
-        return result;
     }
-
-    // Aggregation with GROUP BY
 
 
     // SELECTION QUERY
@@ -306,6 +302,34 @@ public class DatabaseConnectionHandler {
         //return res;
 
     }
+
+
+    // Nested Aggregation with GROUP BY
+    // Finding the average GPA for each school in the Applicant table and retrieving schools where the average GPA is higher than the overall average GPA across all schools
+    public List<String[]> findAvgGPAWhereHigher() {
+        //List<Integer> res = new ArrayList<>();
+        try {
+            String query = "SELECT applicantSchool, Avg(applicantGPA) FROM Applicant GROUP BY applicantSchool HAVING Avg(applicantGPA) > (SELECT Avg(applicantGPA) FROM Applicant)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                //int temp = rs.getInt("ApplicantID");
+                //res.append(temp);
+            }
+
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+
+        //return res;
+
+    }
+
     private void rollbackConnection() {
         try  {
             connection.rollback();
