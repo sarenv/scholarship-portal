@@ -138,7 +138,7 @@ public class DatabaseConnectionHandler {
 
         try {
             String colStr = String.join(", " + columns); // different types of columns
-            String query = "SELECT " + colstr + " FROM " + relation;
+            String query = "SELECT " + colStr + " FROM " + relation;
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
@@ -210,8 +210,6 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
     }
-
-    // Aggregation with GROUP BY
 
 
     // SELECTION QUERY
