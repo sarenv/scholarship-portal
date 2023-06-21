@@ -14,7 +14,7 @@ public class ScholarshipApplication implements LoginWindowDelegate, TerminalTran
 	private DatabaseConnectionHandler dbHandler = null;
 	private LoginWindow loginWindow = null;
 
-	public Bank() {
+	public ScholarshipApplication() {
 		dbHandler = new DatabaseConnectionHandler();
 	}
 	
@@ -52,41 +52,41 @@ public class ScholarshipApplication implements LoginWindowDelegate, TerminalTran
 	/**
 	 * TermainalTransactionsDelegate Implementation
 	 * 
-	 * Insert a branch with the given info
+	 * Insert a application with the given info
 	 */
-    public void insertBranch(BranchModel model) {
-    	dbHandler.insertBranch(model);
+    public void insertApplication(Application app) {
+    	dbHandler.insertApplication(app);
     }
 
     /**
 	 * TermainalTransactionsDelegate Implementation
 	 * 
-	 * Delete branch with given branch ID.
+	 * Delete application with given application ID.
 	 */ 
-    public void deleteBranch(int branchId) {
-    	dbHandler.deleteBranch(branchId);
+    public void deleteApplication(int applicationID) {
+    	dbHandler.deleteApplication(applicationID);
     }
     
     /**
 	 * TermainalTransactionsDelegate Implementation
 	 * 
-	 * Update the branch name for a specific ID
+	 * Update the application name for a specific ID
 	 */
 
-    public void updateBranch(int branchId, String name) {
-    	dbHandler.updateBranch(branchId, name);
+    public void updateApplication(int applicationID, String name) {
+    	dbHandler.updateApplication(applicationID, name);
     }
 
     /**
 	 * TermainalTransactionsDelegate Implementation
 	 * 
-	 * Displays information about varies bank branches.
+	 * Displays information about varies applications.
 	 */
-    public void showBranch() {
-    	BranchModel[] models = dbHandler.getBranchInfo();
+    public void showApplication() {
+    	Application[] models = dbHandler.getApplicationInfo();
     	
     	for (int i = 0; i < models.length; i++) {
-    		BranchModel model = models[i];
+    		Application model = models[i];
     		
     		// simplified output formatting; truncation may occur
     		System.out.printf("%-10.10s", model.getId());
