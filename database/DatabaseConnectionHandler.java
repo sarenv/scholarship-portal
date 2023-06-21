@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ca.ubc.cs304.model.BranchModel;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
 import project_d7i1y_q3d6f_z8h1l.model.Application;
 
