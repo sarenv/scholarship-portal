@@ -6,10 +6,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.lang.ClassNotFoundException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 
 import ca.ubc.cs304.util.PrintablePreparedStatement;
 import project_d7i1y_q3d6f_z8h1l.model.Application;
@@ -71,9 +73,9 @@ public class DatabaseConnectionHandler {
         try {
             String query = "INSERT INTO application VALUES (?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, Application.getApplicationID());
-            ps.setString(2, Application.getApplicantID());
-            ps.setString(3, Application.getDeadline());
+            ps.setInt(1, application.getApplicationID());
+            ps.setInt(2, application.getApplicantID());
+            ps.setString(3, application.getDeadline());
 
             ps.executeUpdate();
             connection.commit();
@@ -145,7 +147,7 @@ public class DatabaseConnectionHandler {
             while (rs.next()) {
                 String[] elements = new String[columns.size()]; // have an emtpy array of selected columns
                 for (int i = 0; i < columns.size(); i++) { // iterate through all the possible columns, i is the current column index
-                    elements[i] = rs.getString(columns[i]); // using the query, put the string of particular column and put it in the array of selected columns
+                    elements[i] = rs.getString(columns.get(i)); // using the query, put the string of particular column and put it in the array of selected columns
                 }
                 result.add(elements);
             }
@@ -231,26 +233,26 @@ public class DatabaseConnectionHandler {
         HashMap<String,String> map = new HashMap<>(); // need to populate the map in main function?
 
         try {
-            StringBuilder allcolumns = new StringBuilder<>();
+            StringBuilder allcolumns = new StringBuilder();
             for (String column: columns) {
                 if (map.containsKey(column)) {
                     String tablename = map.get(column); // take in the column's table
                     allcolumns.append(tablename).append(".").append(column).append(", ");
                 }
-                if (allcolumns.length <= 1) { // if there is only one column or less to choose from, no need the commas
-                    allcolumns.delete(allcolumns.length() - 2); // u delete from the end to the last 2 spaces
+                if (allcolumns.length() <= 1) { // if there is only one column or less to choose from, no need the commas
+                    allcolumns.delete(allcolumns.length() - 2, allcolumns.length()); // u delete from the end to the last 2 spaces
                 }
             }
 
-            String tableStr = String.join(", " + relations); // different types of tables
-            String query = "SELECT " + allcolumns + " FROM " + tableStr;
+            String tableString = String.join(", " + relations); // different types of tables
+            String query = "SELECT " + allcolumns + " FROM " + tableString;
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
                 String[] elements = new String[columns.size()]; // have an emtpy array of selected columns
                 for (int i = 0; i < columns.size(); i++) { // iterate through all the possible columns, i is the current column index
-                    elements[i] = rs.getString(columns[i]); // using the query, put the string of particular column and put it in the array of selected columns
+                    elements[i] = rs.getString(columns.get(i)); // using the query, put the string of particular column and put it in the array of selected columns
                 }
                 result.add(elements);
             }
@@ -302,8 +304,8 @@ public class DatabaseConnectionHandler {
                 String temp1 = rs.getString("major");
                 String temp2 = String.valueOf(rs.getInt("minimumGPA"));
                 String[] temp3 = new String[2];
-                temp3.add(temp1);
-                temp3.add(temp2);
+                temp3[0] = temp1;
+                temp3[1] = temp2;
                 res.add(temp3);
             }
 
@@ -333,8 +335,8 @@ public class DatabaseConnectionHandler {
                 String temp1 = rs.getString("applicantSchool");
                 String temp2 = String.valueOf(rs.getInt("applicantGPA"));
                 String[] temp3 = new String[2];
-                temp3.add(temp1);
-                temp3.add(temp2);
+                temp3[0] = temp1;
+                temp3[1] = temp2;
                 res.add(temp3);
             }
 
