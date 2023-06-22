@@ -1,8 +1,8 @@
 package ui;
 
 import database.DatabaseConnectionHandler;
-import ui.panel.ContentPanel;
 import ui.panel.ProjectionPanel;
+import ui.panel.SelectionPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,6 +19,7 @@ public class ScholarshipGUI extends JFrame {
     private JPanel applicantPanel = new JPanel();
 
     private ProjectionPanel projectionPanel = new ProjectionPanel(this);
+    private SelectionPanel selectionPanel = new SelectionPanel(this);
 
     private JLabel title = new JLabel();
     //    private JLabel question = new JLabel();
@@ -32,6 +33,8 @@ public class ScholarshipGUI extends JFrame {
     private JButton donorButton;
 
     private JButton projectionButton;
+    private JButton selectionButton;
+
     public ScholarshipGUI() {
         dbHandler = new DatabaseConnectionHandler();
         // Initializers and this.adds go in here
@@ -80,6 +83,7 @@ public class ScholarshipGUI extends JFrame {
         superintendentButton = new JButton();
         committeeButton = new JButton();
         projectionButton = new JButton();
+        selectionButton = new JButton();
     }
 
 
@@ -101,6 +105,7 @@ public class ScholarshipGUI extends JFrame {
         getSuperintendentButton();
         getDonorButton();
         getProjectionButton();
+        getSelectionButton();
         this.getContentPane().add(mainPanel);
         return mainPanel;
     }
@@ -283,6 +288,30 @@ public class ScholarshipGUI extends JFrame {
     //////////// ALL PANEL METHODS ////////////////
 
     // More methods
+
+    // ALL SELECTION STUFF IS HERE
+    public void getSelectionButton() {
+        selectionButton.setPreferredSize(new Dimension(50,20));
+        selectionButton.setText("Selection");
+        selectionButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        selectionButton.addActionListener( new gotoSelectionListener(selectionButton));
+        selectionButton.setFocusable(false);
+        mainPanel.add(selectionButton, BorderLayout.CENTER);
+    }
+
+    class gotoSelectionListener implements ActionListener {
+        private JButton jbutton;
+        public gotoSelectionListener(JButton button) {
+            this.jbutton = button;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getContentPane().remove(mainPanel);
+            getContentPane().add(selectionPanel);
+            repaint();
+            revalidate();
+        }
+    }
 }
 
 

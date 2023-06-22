@@ -14,7 +14,7 @@ import java.util.List;
 
 
 import ca.ubc.cs304.util.PrintablePreparedStatement;
-import project_d7i1y_q3d6f_z8h1l.model.Application;
+import model.*;
 
 /**
  * This class handles all database related transactions
@@ -25,7 +25,7 @@ public class DatabaseConnectionHandler {
     private static final String EXCEPTION_TAG = "[EXCEPTION]";
     private static final String WARNING_TAG = "[WARNING]";
 
-    private Connection connection = null;
+    private static Connection connection = null;
 
     public DatabaseConnectionHandler() {
         try {
@@ -86,15 +86,15 @@ public class DatabaseConnectionHandler {
     }
 
     // DELETE QUERY
-    public void deleteApplication(int applicationID) {
+    public static void deleteApplicant(int applicantID) {
         try {
             String query = "DELETE FROM application WHERE applicationID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, applicationID);
+            ps.setInt(1, applicantID);
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
-                System.out.println(WARNING_TAG + " Application " + applicationID + " does not exist!");
+                System.out.println(WARNING_TAG + " Application " + applicantID + " does not exist!");
             }
 
             connection.commit();
@@ -107,7 +107,7 @@ public class DatabaseConnectionHandler {
     }
 
     // INSERT QUERY
-    public void insertApplication(Application application) {
+    public static void insertApplication(Application application) {
         try {
             String query = "INSERT INTO application VALUES (?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -389,7 +389,7 @@ public class DatabaseConnectionHandler {
 
     }
 
-    private void rollbackConnection() {
+    private static void rollbackConnection() {
         try  {
             connection.rollback();
         } catch (SQLException e) {

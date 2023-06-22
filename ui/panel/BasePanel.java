@@ -5,10 +5,10 @@ import ui.ScholarshipGUI;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class ContentPanel  extends JPanel {
+public abstract class BasePanel extends JPanel {
     protected ScholarshipGUI scholarshipGUI;
 
-    public ContentPanel(ScholarshipGUI scholarshipGUI) {
+    public BasePanel(ScholarshipGUI scholarshipGUI) {
         this.scholarshipGUI = scholarshipGUI;
         generate();
     }

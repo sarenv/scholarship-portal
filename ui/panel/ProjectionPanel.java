@@ -5,17 +5,16 @@ import ui.ScholarshipGUI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProjectionPanel extends  ContentPanel {
-    private JComboBox<String> tableDropDown;
+public class ProjectionPanel extends BasePanel {
+    private JComboBox<String> dropDownTable;
     private JPanel checkboxesPanel;
-    private HashMap<String, List<String>> tableColumns;
+    private HashMap<String, List<String>> tableCol;
 
     public ProjectionPanel(ScholarshipGUI scholarshipGUI) {
         super(scholarshipGUI);
@@ -23,41 +22,42 @@ public class ProjectionPanel extends  ContentPanel {
 
     @Override
     protected void generate() {
-        initaliseDropDownCheckBoxes();
-        tableColumns.put("Applicant", new ArrayList<>(Arrays.asList("applicantID", "firstName", "lastName", "applicantEmail", "applicantSchool", "applicantGPA")));
-        tableDropDown = new JComboBox<>(tableColumns.keySet().toArray(new String[0]));
-        tableDropDown.addActionListener(e -> {
-            updateCheckBoxes();
-        });
+        initialiseDropDownCheckBoxes();
+        // first thing they will see
+        tableCol.put("Applicant", new ArrayList<>(Arrays.asList("applicantID", "firstName", "lastName", "applicantEmail", "applicantSchool", "applicantGPA")));
+
+
+        dropDownTable = new JComboBox<>(tableCol.keySet().toArray(new String[0]));
+        dropDownTable.addActionListener(e -> {updateCheckBoxes();});
         checkboxesPanel = new JPanel();
-        checkboxesPanel.setLayout(new BoxLayout(checkboxesPanel, BoxLayout.PAGE_AXIS));
+        checkboxesPanel.setLayout(new BoxLayout(checkboxesPanel, BoxLayout.Y_AXIS));
         setLayout(new BorderLayout());
-        add(tableDropDown, BorderLayout.NORTH);
+        add(dropDownTable, BorderLayout.NORTH);
         add(checkboxesPanel, BorderLayout.CENTER);
     }
 
 
-    private void initaliseDropDownCheckBoxes() {
-        tableColumns = new HashMap<>();
-        tableColumns.put("Applicant", new ArrayList<>(Arrays.asList("applicantID", "firstName", "lastName", "applicantEmail", "applicantSchool", "applicantGPA")));
-        tableColumns.put("Application",new ArrayList<>(Arrays.asList("applicantID","deadline")));
-        tableColumns.put("ReferenceLetter",new ArrayList<>(Arrays.asList("referenceID","applicantID","referenceName","referenceEmail","referenceSchool","referencePosition")));
-        tableColumns.put("AppliesTo",new ArrayList<>(Arrays.asList("applicantID","applicationID","scholarshipID","donorID")));
-        tableColumns.put("ScholarshipCommittee",new ArrayList<>(Arrays.asList("committeeID")));
-        tableColumns.put("Donor",new ArrayList<>(Arrays.asList("donorID")));
-        tableColumns.put("Superintendent",new ArrayList<>(Arrays.asList("superintendentID","firstName","lastName")));
-        tableColumns.put("SelectionCriteria",new ArrayList<>(Arrays.asList("criteriaID","major","minimumGPA","familyIncome")));
-        tableColumns.put("Evaluates",new ArrayList<>(Arrays.asList("applicationID","committeeID","status")));
-        tableColumns.put("Scholarship",new ArrayList<>(Arrays.asList("scholarshipID","amount","donorID","")));
-        tableColumns.put("Renewable",new ArrayList<>(Arrays.asList("applicantID","amount","dateOfRenewal","donorID")));
-        tableColumns.put("OneTime",new ArrayList<>(Arrays.asList("applicantID","amount","donorID")));
+    private void initialiseDropDownCheckBoxes() {
+        tableCol = new HashMap<>();
+        tableCol.put("Applicant", new ArrayList<>(Arrays.asList("applicantID", "firstName", "lastName", "applicantEmail", "applicantSchool", "applicantGPA")));
+        tableCol.put("Application",new ArrayList<>(Arrays.asList("applicantID","deadline")));
+        tableCol.put("ReferenceLetter",new ArrayList<>(Arrays.asList("referenceID","applicantID","referenceName","referenceEmail","referenceSchool","referencePosition")));
+        tableCol.put("AppliesTo",new ArrayList<>(Arrays.asList("applicantID","applicationID","scholarshipID","donorID")));
+        tableCol.put("ScholarshipCommittee",new ArrayList<>(Arrays.asList("committeeID")));
+        tableCol.put("Donor",new ArrayList<>(Arrays.asList("donorID")));
+        tableCol.put("Superintendent",new ArrayList<>(Arrays.asList("superintendentID","firstName","lastName")));
+        tableCol.put("SelectionCriteria",new ArrayList<>(Arrays.asList("criteriaID","major","minimumGPA","familyIncome")));
+        tableCol.put("Evaluates",new ArrayList<>(Arrays.asList("applicationID","committeeID","status")));
+        tableCol.put("Scholarship",new ArrayList<>(Arrays.asList("scholarshipID","amount","donorID","")));
+        tableCol.put("Renewable",new ArrayList<>(Arrays.asList("applicantID","amount","dateOfRenewal","donorID")));
+        tableCol.put("OneTime",new ArrayList<>(Arrays.asList("applicantID","amount","donorID")));
     }
 
     private void updateCheckBoxes() {
         checkboxesPanel.removeAll();
-        String selectionTable = (String) tableDropDown.getSelectedItem();
-        for (String column : tableColumns.get(selectionTable)) {
-            JCheckBox checkbox = new JCheckBox(column);
+        String selectionTable = (String) dropDownTable.getSelectedItem();
+        for (String col : tableCol.get(selectionTable)) {
+            JCheckBox checkbox = new JCheckBox(col);
             checkboxesPanel.add(checkbox);
         }
         JButton projectionButton = new JButton("Projection");
@@ -71,22 +71,27 @@ public class ProjectionPanel extends  ContentPanel {
                     }
                 }
             }
+            // CHANGE HERE NEEDS TO RETURN SMTH
              ArrayList<String[]> result = null;
-            generateView(selectionTable,result,columns);
+            generateProjection(selectionTable,result,columns);
         });
         checkboxesPanel.add(projectionButton);
         checkboxesPanel.repaint();
         checkboxesPanel.revalidate();
     }
 
-    private void generateView(String tableHeader, ArrayList<String[]> result, ArrayList<String> colHeader) {
-        JFrame viewFrame = new JFrame();
+    private void generateProjection(String tableHeader, ArrayList<String[]> result, ArrayList<String> colHeader) {
+        JFrame projectionFrame = new JFrame();
         JTable table = new JTable();
-        JTableHeader header = table.getTableHeader();
+        JLabel title = createTitle(tableHeader);
+        title.setFont(new Font("Proxima Nova",Font.PLAIN, 30));
         JPanel panel = new JPanel(new BorderLayout());
         Object[] columns = colHeader.toArray();
         DefaultTableModel model = new DefaultTableModel();
+
+
         model.setColumnIdentifiers(columns);
+        // making the rows
         if(result != null){
             for(String[] row : result){
                 model.addRow(row);
@@ -95,13 +100,12 @@ public class ProjectionPanel extends  ContentPanel {
         table.setModel(model);
         JScrollPane pane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
-        table.setPreferredScrollableViewportSize(new Dimension(800, 600));
+        panel.add(title,BorderLayout.NORTH);
         panel.add(pane,BorderLayout.WEST);
-        viewFrame.add(panel);
-        viewFrame.setLocationRelativeTo(null);
-        viewFrame.setSize(1000,1000);
-        viewFrame.setResizable(false);
-        viewFrame.setVisible(true);
+        projectionFrame.add(panel);
+        projectionFrame.setSize(500,500);
+        projectionFrame.setVisible(true);
+        projectionFrame.setResizable(false);
     }
 
 }
