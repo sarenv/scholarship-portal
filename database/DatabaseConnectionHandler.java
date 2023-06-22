@@ -32,6 +32,7 @@ public class DatabaseConnectionHandler {
             // Load the Oracle JDBC driver
             // Note that the path could change for new drivers
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            login("ora_sarenv", "a87347696");
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
@@ -414,6 +415,23 @@ public class DatabaseConnectionHandler {
 //
 //        BranchModel branch2 = new BranchModel("123 Coco Ave", "Vancouver", 2, "Second Branch", 1234568);
 //        insertBranch(branch2);
+    }
+
+    public boolean login(String username, String password) {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+
+            connection = DriverManager.getConnection(ORACLE_URL, username, password);
+            connection.setAutoCommit(false);
+
+            System.out.println("\nConnected to Oracle!");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            return false;
+        }
     }
 
         

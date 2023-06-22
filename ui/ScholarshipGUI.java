@@ -1,10 +1,9 @@
 package ui;
 
 import database.DatabaseConnectionHandler;
-import ui.panel.ContentPanel;
-import ui.panel.ProjectionPanel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,9 +15,6 @@ public class ScholarshipGUI extends JFrame {
     private DatabaseConnectionHandler dbHandler = null;
     private JPanel mainPanel = new JPanel();;
     private JPanel applicantPanel = new JPanel();
-
-    private ProjectionPanel projectionPanel = new ProjectionPanel(this);
-
     private JLabel title = new JLabel();
 //    private JLabel question = new JLabel();
     private JButton applicantButton;
@@ -29,10 +25,9 @@ public class ScholarshipGUI extends JFrame {
     private JButton selectioncriteriaButton;
     private JButton referenceletterButton;
     private JButton donorButton;
-
-    private JButton projectionButton;
     public ScholarshipGUI() {
         // Initializers and this.adds go in here
+        dbHandler = new DatabaseConnectionHandler();
         initializeButtons();
         initializer();
         mainPanel();
@@ -77,7 +72,6 @@ public class ScholarshipGUI extends JFrame {
         selectioncriteriaButton = new JButton();
         superintendentButton = new JButton();
         committeeButton = new JButton();
-        projectionButton = new JButton();
     }
 
 
@@ -98,7 +92,6 @@ public class ScholarshipGUI extends JFrame {
         getReferenceletterButton();
         getSuperintendentButton();
         getDonorButton();
-        getProjectionButton();
         this.getContentPane().add(mainPanel);
         return mainPanel;
     }
@@ -131,11 +124,29 @@ public class ScholarshipGUI extends JFrame {
             revalidate();
         }
     }
+
+//    public class DisplayPanel extends JPanel {
+//        private JTable table;
+//
+//        public DisplayPanel(ArrayList<String[]> data) {
+//            setLayout(new BorderLayout());
+//
+//            DefaultTableModel model = new DefaultTableModel();
+//            table = new JTable(model);
+//
+//            for (int i = 0; i < data.get(0).length; i++) {
+//                model.addColumn("Column " + (i + 1));
+//            }
+//
+//            for (String[] row : data) {
+//                model.addRow(row);
+//            }
+//
+//            JScrollPane scrollPane = new JScrollPane(table);
+//            add(scrollPane, BorderLayout.CENTER);
+//        }
+//    }
     // applicant's panel
-
-    JTextArea textArea = new JTextArea();
-
-    JScrollPane ScrollPane = new JScrollPane(textArea);
     public void applicantPanel() {
         applicantPanel.setLayout(new BoxLayout(applicantPanel, BoxLayout.PAGE_AXIS));
         applicantPanel.setBackground(Color.getHSBColor(66,66,66));
@@ -146,8 +157,16 @@ public class ScholarshipGUI extends JFrame {
         applicantPanel.add(title, BorderLayout.CENTER);
         this.getContentPane().add(applicantPanel);
 
-        ArrayList<String[]> res = dbHandler.applicantTable();
-        showTable(res, ScrollPane);
+        ArrayList<String[]> data = dbHandler.applicantTable();
+
+//        DisplayPanel displayPanel = new DisplayPanel(data);
+//
+//        JFrame frame = new JFrame("Table Display Example");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(400, 300);
+//        frame.getContentPane().add(displayPanel);
+//        frame.setVisible(true);
+
     }
 
 
@@ -225,36 +244,7 @@ public class ScholarshipGUI extends JFrame {
         mainPanel.add(donorButton, BorderLayout.CENTER);;
     }
 
-
-    // PROJECTION
-    public void getProjectionButton() {
-        projectionButton.setPreferredSize(new Dimension(50,20));
-        projectionButton.setText("Projection");
-        projectionButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
-        projectionButton.addActionListener( new gotoProjectionListener(projectionButton));
-        projectionButton.setFocusable(false);
-        mainPanel.add(projectionButton, BorderLayout.CENTER);
-    }
-
-    // applicant button's ActionListener
-    class gotoProjectionListener implements ActionListener {
-        private JButton jbutton;
-        public gotoProjectionListener(JButton button) {
-            this.jbutton = button;
-        }
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            getContentPane().remove(mainPanel);
-            getContentPane().add(projectionPanel);
-            repaint();
-            revalidate();
-        }
-    }
-
-
-
     //////////// ALL PANEL METHODS ////////////////
-
     private void showTable(ArrayList<String[]> table, JScrollPane scrollPane) {
         String[] columnNames = new String[table.get(0).length];
         String[][] data = new String[table.size() - 1][table.get(0).length];
@@ -273,6 +263,7 @@ public class ScholarshipGUI extends JFrame {
         jTable.setBounds(30, 40, 200, 300);
         scrollPane.setViewportView(jTable);
     }
+
 
     // More methods
 }
