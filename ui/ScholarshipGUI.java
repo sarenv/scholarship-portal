@@ -40,10 +40,10 @@ public class ScholarshipGUI extends JFrame {
     public void initializer() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Scholarship Search");
-        this.getContentPane().setLayout(new FlowLayout());
+        this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER));
         this.setSize(900, 500);
         title.setText("Scholarship Search!");
-        title.setFont(new Font("Proxima Nova", Font.BOLD, 22));
+        title.setFont(new Font("Proxima Nova", Font.BOLD, 40));
         title.setBounds(375, 10, 300, 50);
 
     }
@@ -62,56 +62,91 @@ public class ScholarshipGUI extends JFrame {
 
     // main menu panel to switch to all panels
     public JPanel mainPanel() {
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
         mainPanel.setBackground(Color.getHSBColor(66,66,66));
-        mainPanel.setPreferredSize(new Dimension(700,300));
-        mainPanel.setMaximumSize(new Dimension(700, 300));
+        mainPanel.setPreferredSize(new Dimension(800,350));
+        mainPanel.setMaximumSize(new Dimension(800, 350));
         JLabel question = new JLabel("Choose one table: ", JLabel.CENTER);
-//        getApplicantButton();
-//        getApplicationButton();
-//        getScholarshipButton();
-//        getSelectioncriteriaButton();
-//        getCommitteeButton();
-//        getReferenceletterButton();
-//        getSuperintendentButton();
-//        getDonorButton();
+        question.setFont(new Font("Proxima Nova", Font.PLAIN, 25));
+        mainPanel.add(question, BorderLayout.CENTER);
+        getApplicantButton();
+        getApplicationButton();
+        getScholarshipButton();
+        getSelectioncriteriaButton();
+        getCommitteeButton();
+        getReferenceletterButton();
+        getSuperintendentButton();
+        getDonorButton();
+        this.getContentPane().add(mainPanel);
         return mainPanel;
     }
 
     //////////// ALL BUTTONS METHODS //////////////////////
     // lead to applicantPanel
-    public JButton getApplicantButton() {
-        return applicantButton;
+    public void getApplicantButton() {
+        applicantButton.setPreferredSize(new Dimension(50,20));
+        applicantButton.setText("Applicant table");
+        applicantButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        applicantButton.setFocusable(false);
+        mainPanel.add(applicantButton, BorderLayout.CENTER);
     }
 
     // lead to applicationPanel
-    public JButton getApplicationButton() {
-        return applicationButton;
+    public void getApplicationButton() {
+        applicationButton.setPreferredSize(new Dimension(40,20));
+        applicationButton.setText("Application table");
+        applicationButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        applicationButton.setFocusable(false);
+        mainPanel.add(applicationButton, BorderLayout.CENTER);
     }
 
     // lead to scholarshipPanel
-    public JButton getScholarshipButton() {
-        return scholarshipButton;
+    public void getScholarshipButton() {
+        scholarshipButton.setPreferredSize(new Dimension(40,20));
+        scholarshipButton.setText("Scholarship table");
+        scholarshipButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        scholarshipButton.setFocusable(false);
+        mainPanel.add(scholarshipButton, BorderLayout.CENTER);
     }
 
-    public JButton getSelectioncriteriaButton() {
-        return selectioncriteriaButton;
+    public void getSelectioncriteriaButton() {
+        selectioncriteriaButton.setPreferredSize(new Dimension(40,20));
+        selectioncriteriaButton.setText("Selection Criteria table");
+        selectioncriteriaButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        selectioncriteriaButton.setFocusable(false);
+        mainPanel.add(selectioncriteriaButton, BorderLayout.CENTER);
     }
 
-    public JButton getCommitteeButton() {
-        return committeeButton;
+    public void getCommitteeButton() {
+        committeeButton.setPreferredSize(new Dimension(40,20));
+        committeeButton.setText("Committee table");
+        committeeButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        committeeButton.setFocusable(false);
+        mainPanel.add(committeeButton, BorderLayout.CENTER);
     }
 
-    public JButton getReferenceletterButton() {
-        return referenceletterButton;
+    public void getReferenceletterButton() {
+        referenceletterButton.setPreferredSize(new Dimension(40,20));
+        referenceletterButton.setText("Reference Letter table");
+        referenceletterButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        referenceletterButton.setFocusable(false);
+        mainPanel.add(referenceletterButton, BorderLayout.CENTER);
     }
 
-    public JButton getSuperintendentButton() {
-        return superintendentButton;
+    public void getSuperintendentButton() {
+        superintendentButton.setPreferredSize(new Dimension(40,20));
+        superintendentButton.setText("Superintendent table");
+        superintendentButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        superintendentButton.setFocusable(false);
+        mainPanel.add(superintendentButton, BorderLayout.CENTER);
     }
 
-    public JButton getDonorButton() {
-        return donorButton;
+    public void getDonorButton() {
+        donorButton.setPreferredSize(new Dimension(40,20));
+        donorButton.setText("Donor table");
+        donorButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        donorButton.setFocusable(false);
+        mainPanel.add(donorButton, BorderLayout.CENTER);;
     }
 
     //////////// ALL PANEL METHODS ////////////////
