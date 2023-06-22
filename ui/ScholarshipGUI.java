@@ -1,6 +1,8 @@
 package ui;
 
 import database.DatabaseConnectionHandler;
+import ui.panel.ContentPanel;
+import ui.panel.ProjectionPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +16,9 @@ public class ScholarshipGUI extends JFrame {
     private DatabaseConnectionHandler dbHandler = null;
     private JPanel mainPanel = new JPanel();;
     private JPanel applicantPanel = new JPanel();
+
+    private ProjectionPanel projectionPanel = new ProjectionPanel(this);
+
     private JLabel title = new JLabel();
 //    private JLabel question = new JLabel();
     private JButton applicantButton;
@@ -24,6 +29,8 @@ public class ScholarshipGUI extends JFrame {
     private JButton selectioncriteriaButton;
     private JButton referenceletterButton;
     private JButton donorButton;
+
+    private JButton projectionButton;
     public ScholarshipGUI() {
         // Initializers and this.adds go in here
         initializeButtons();
@@ -70,6 +77,7 @@ public class ScholarshipGUI extends JFrame {
         selectioncriteriaButton = new JButton();
         superintendentButton = new JButton();
         committeeButton = new JButton();
+        projectionButton = new JButton();
     }
 
 
@@ -90,6 +98,7 @@ public class ScholarshipGUI extends JFrame {
         getReferenceletterButton();
         getSuperintendentButton();
         getDonorButton();
+        getProjectionButton();
         this.getContentPane().add(mainPanel);
         return mainPanel;
     }
@@ -216,9 +225,54 @@ public class ScholarshipGUI extends JFrame {
         mainPanel.add(donorButton, BorderLayout.CENTER);;
     }
 
+
+    // PROJECTION
+    public void getProjectionButton() {
+        projectionButton.setPreferredSize(new Dimension(50,20));
+        projectionButton.setText("Projection");
+        projectionButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        projectionButton.addActionListener( new gotoProjectionListener(projectionButton));
+        projectionButton.setFocusable(false);
+        mainPanel.add(projectionButton, BorderLayout.CENTER);
+    }
+
+    // applicant button's ActionListener
+    class gotoProjectionListener implements ActionListener {
+        private JButton jbutton;
+        public gotoProjectionListener(JButton button) {
+            this.jbutton = button;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getContentPane().remove(mainPanel);
+            getContentPane().add(projectionPanel);
+            repaint();
+            revalidate();
+        }
+    }
+
+
+
     //////////// ALL PANEL METHODS ////////////////
 
-
+    private void showTable(ArrayList<String[]> table, JScrollPane scrollPane) {
+        String[] columnNames = new String[table.get(0).length];
+        String[][] data = new String[table.size() - 1][table.get(0).length];
+        for (int i = 0; i < table.size(); i++) {
+            for (int j = 0; j < table.get(0).length; j++) {
+                if (i == 0) {
+                    columnNames[j] = table.get(0)[j];
+                } else {
+                    data[i - 1][j] = table.get(i)[j];
+                }
+            }
+        }
+        // Initializing the JTable
+        JTable jTable;
+        jTable = new JTable(data, columnNames);
+        jTable.setBounds(30, 40, 200, 300);
+        scrollPane.setViewportView(jTable);
+    }
 
     // More methods
 }
