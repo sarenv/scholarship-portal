@@ -4,12 +4,14 @@ import javafx.scene.shape.Box;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ScholarshipGUI extends JFrame {
     // Put buttons and shit and instantiate other shit here
 
     private JPanel mainPanel = new JPanel();;
-    private JPanel applicationPanel = new JPanel();
+    private JPanel applicantPanel = new JPanel();
     private JLabel title = new JLabel();
 //    private JLabel question = new JLabel();
     private JButton applicantButton;
@@ -24,13 +26,13 @@ public class ScholarshipGUI extends JFrame {
         // Initializers and this.adds go in here
         initializeButtons();
         mainPanel();
-        applicationPanel();
+        applicantPanel();
 
         JPanel layoutPanel = new JPanel();
         layoutPanel.setLayout(new BoxLayout(layoutPanel,BoxLayout.Y_AXIS));
         layoutPanel.add(title);
         layoutPanel.add(mainPanel);
-        layoutPanel.add(applicationPanel);
+        layoutPanel.add(applicantPanel);
 
         this.add(layoutPanel);
         initializer();
@@ -81,16 +83,50 @@ public class ScholarshipGUI extends JFrame {
         return mainPanel;
     }
 
-    //////////// ALL BUTTONS METHODS //////////////////////
+    //////////// ALL BUTTONS + ACTION LISTENER METHODS //////////////////////
+
+    /* APPLICANT */
     // lead to applicantPanel
     public void getApplicantButton() {
         applicantButton.setPreferredSize(new Dimension(50,20));
         applicantButton.setText("Applicant table");
         applicantButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        applicantButton.addActionListener(new goToApplicantListener(applicantButton));
         applicantButton.setFocusable(false);
         mainPanel.add(applicantButton, BorderLayout.CENTER);
     }
 
+    // applicant button's ActionListener
+    class goToApplicantListener implements ActionListener {
+        private JButton jbutton;
+        public goToApplicantListener(JButton button) {
+            this.jbutton = button;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getContentPane().remove(mainPanel);
+            applicantPanel();
+            getContentPane().add(applicantPanel);
+            repaint();
+            revalidate();
+        }
+    }
+    // applicant's panel
+    public void applicantPanel() {
+        applicantPanel.setLayout(new BoxLayout(applicantPanel, BoxLayout.PAGE_AXIS));
+        applicantPanel.setBackground(Color.getHSBColor(66,66,66));
+        applicantPanel.setPreferredSize(new Dimension(800,350));
+        applicantPanel.setMaximumSize(new Dimension(800, 350));
+        JLabel title = new JLabel("Applicant table: ", JLabel.CENTER);
+        title.setFont(new Font("Proxima Nova", Font.ITALIC, 20));
+        applicantPanel.add(title, BorderLayout.CENTER);
+        this.getContentPane().add(applicantPanel);
+    }
+
+
+
+
+    /* APPLICATION */
     // lead to applicationPanel
     public void getApplicationButton() {
         applicationButton.setPreferredSize(new Dimension(40,20));
@@ -100,6 +136,8 @@ public class ScholarshipGUI extends JFrame {
         mainPanel.add(applicationButton, BorderLayout.CENTER);
     }
 
+
+    /* SCHOLARSHIP */
     // lead to scholarshipPanel
     public void getScholarshipButton() {
         scholarshipButton.setPreferredSize(new Dimension(40,20));
@@ -109,6 +147,9 @@ public class ScholarshipGUI extends JFrame {
         mainPanel.add(scholarshipButton, BorderLayout.CENTER);
     }
 
+
+
+    /* SELECTION CRITERIA */
     public void getSelectioncriteriaButton() {
         selectioncriteriaButton.setPreferredSize(new Dimension(40,20));
         selectioncriteriaButton.setText("Selection Criteria table");
@@ -117,6 +158,8 @@ public class ScholarshipGUI extends JFrame {
         mainPanel.add(selectioncriteriaButton, BorderLayout.CENTER);
     }
 
+
+    /* COMMITTEE */
     public void getCommitteeButton() {
         committeeButton.setPreferredSize(new Dimension(40,20));
         committeeButton.setText("Committee table");
@@ -125,6 +168,8 @@ public class ScholarshipGUI extends JFrame {
         mainPanel.add(committeeButton, BorderLayout.CENTER);
     }
 
+
+    /* REFERENCE LETTER */
     public void getReferenceletterButton() {
         referenceletterButton.setPreferredSize(new Dimension(40,20));
         referenceletterButton.setText("Reference Letter table");
@@ -133,6 +178,8 @@ public class ScholarshipGUI extends JFrame {
         mainPanel.add(referenceletterButton, BorderLayout.CENTER);
     }
 
+
+    /* SUPERINTENDENT */
     public void getSuperintendentButton() {
         superintendentButton.setPreferredSize(new Dimension(40,20));
         superintendentButton.setText("Superintendent table");
@@ -141,6 +188,8 @@ public class ScholarshipGUI extends JFrame {
         mainPanel.add(superintendentButton, BorderLayout.CENTER);
     }
 
+
+    /* DONOR */
     public void getDonorButton() {
         donorButton.setPreferredSize(new Dimension(40,20));
         donorButton.setText("Donor table");
@@ -150,11 +199,9 @@ public class ScholarshipGUI extends JFrame {
     }
 
     //////////// ALL PANEL METHODS ////////////////
-    // applicant's application panel
-    public JPanel applicationPanel() {
 
-        return applicationPanel;
-    }
+
+
 
     // More methods
 }
