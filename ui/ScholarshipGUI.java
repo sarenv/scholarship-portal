@@ -25,24 +25,34 @@ public class ScholarshipGUI extends JFrame {
     public ScholarshipGUI() {
         // Initializers and this.adds go in here
         initializeButtons();
-        mainPanel();
-        applicantPanel();
-
-        JPanel layoutPanel = new JPanel();
-        layoutPanel.setLayout(new BoxLayout(layoutPanel,BoxLayout.Y_AXIS));
-        layoutPanel.add(title);
-        layoutPanel.add(mainPanel);
-        layoutPanel.add(applicantPanel);
-
-        this.add(layoutPanel);
         initializer();
+        mainPanel();
+        //applicantPanel();
+
+        //JPanel layoutPanel = new JPanel();
+//        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("Scholarship Search");
+        this.setFont(new Font("Proxima Nova", Font.BOLD, 40));
+        this.setBounds(375, 10, 300, 50);
+        this.setSize(900, 500);
+        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
+//        this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER));
+        this.setVisible(true);
+        this.add(title);
+        this.add(mainPanel);
+        //this.add(applicantPanel);
+
+        //this.add(layoutPanel);
+        //initializer();
 
     }
 
     public void initializer() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Scholarship Search");
-        this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER));
+        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
+//        this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER));
         this.setSize(900, 500);
         title.setText("Scholarship Search!");
         title.setFont(new Font("Proxima Nova", Font.BOLD, 40));
