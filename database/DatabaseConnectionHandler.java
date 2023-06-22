@@ -27,15 +27,52 @@ public class DatabaseConnectionHandler {
 
     private Connection connection = null;
 
-//    public DatabaseConnectionHandler() {
-//        try {
-//            // Load the Oracle JDBC driver
-//            // Note that the path could change for new drivers
-//            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-//        } catch (SQLException e) {
-//            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-//        }
-//    }
+    public DatabaseConnectionHandler() {
+        try {
+            // Load the Oracle JDBC driver
+            // Note that the path could change for new drivers
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
+
+    // View applicant table
+    public ArrayList<String[]> applicantTable() {
+        ArrayList<String[]> res = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM Applicant";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                String temp1 = String.valueOf(rs.getInt("ApplicantID"));
+                String temp2 = rs.getString("firstName");
+                String temp3 = String.valueOf(rs.getInt("lastName"));
+                String temp4 = String.valueOf(rs.getInt("applicantEmail"));
+                String temp5 = String.valueOf(rs.getInt("applicantSchool"));
+                String temp6 = String.valueOf(rs.getFloat("applicantGPA"));
+                String[] temp7 = new String[6];
+                temp7[0] = temp1;
+                temp7[1] = temp2;
+                temp7[2] = temp3;
+                temp7[3] = temp4;
+                temp7[4] = temp5;
+                temp7[5] = temp6;
+                res.add(temp7);
+            }
+
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+
+        return res;
+
+    }
 
     public void close() {
         try {
