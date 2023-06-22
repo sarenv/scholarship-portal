@@ -29,8 +29,7 @@ public class ScholarshipGUI extends JFrame {
         mainPanel();
         //applicantPanel();
 
-        //JPanel layoutPanel = new JPanel();
-//        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Scholarship Search");
         this.setFont(new Font("Proxima Nova", Font.BOLD, 40));
