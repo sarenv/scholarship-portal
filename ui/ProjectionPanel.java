@@ -66,8 +66,15 @@ public class ProjectionPanel {
                     }
                 }
             }
-//            ArrayList<String[]> result = DatabaseConnectionHandler.projectionTable();
+            ArrayList<String[]> result = DatabaseConnectionHandler.projectionTable();
+            generateViewFrame(selectedTable,result,columns);
         });
+        checkboxesPanel.add(projectionButton);
+        checkboxesPanel.repaint();
+        checkboxesPanel.revalidate();
     }
+
+    private void generateViewFrame(String tableHeader, ArrayList<String[]> columnsResult, ArrayList<String> columnHeader)
+
 
 }
