@@ -154,7 +154,11 @@ public class ScholarshipGUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             getContentPane().remove(mainPanel);
             applicantPanel();
-            getContentPane().add(applicantPanel);
+
+            ArrayList<String[]> res = dbHandler.applicantTable();
+            DisplayPanel displayPanel = new DisplayPanel(res);
+
+            getContentPane().add(displayPanel);
             repaint();
             revalidate();
         }
@@ -171,16 +175,6 @@ public class ScholarshipGUI extends JFrame {
         title.setFont(new Font("Proxima Nova", Font.ITALIC, 20));
         applicantPanel.add(title, BorderLayout.CENTER);
         this.getContentPane().add(applicantPanel);
-
-        ArrayList<String[]> res = dbHandler.applicantTable();
-
-        DisplayPanel displayPanel = new DisplayPanel(res);
-
-        JFrame frame = new JFrame("Table Display Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.getContentPane().add(displayPanel);
-        frame.setVisible(true);
     }
 
 
