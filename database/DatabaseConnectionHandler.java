@@ -48,9 +48,9 @@ public class DatabaseConnectionHandler {
             while(rs.next()) {
                 String temp1 = String.valueOf(rs.getInt("ApplicantID"));
                 String temp2 = rs.getString("firstName");
-                String temp3 = String.valueOf(rs.getInt("lastName"));
-                String temp4 = String.valueOf(rs.getInt("applicantEmail"));
-                String temp5 = String.valueOf(rs.getInt("applicantSchool"));
+                String temp3 = rs.getString("lastName");
+                String temp4 = rs.getString("applicantEmail");
+                String temp5 = rs.getString("applicantSchool");
                 String temp6 = String.valueOf(rs.getFloat("applicantGPA"));
                 String[] temp7 = new String[6];
                 temp7[0] = temp1;
