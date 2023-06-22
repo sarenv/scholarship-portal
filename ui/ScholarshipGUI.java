@@ -1,15 +1,17 @@
 package ui;
 
-import javafx.scene.shape.Box;
+import database.DatabaseConnectionHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class ScholarshipGUI extends JFrame {
     // Put buttons and shit and instantiate other shit here
 
+    private DatabaseConnectionHandler dbHandler = null;
     private JPanel mainPanel = new JPanel();;
     private JPanel applicantPanel = new JPanel();
     private JLabel title = new JLabel();
@@ -121,6 +123,10 @@ public class ScholarshipGUI extends JFrame {
         }
     }
     // applicant's panel
+
+    JTextArea textArea = new JTextArea();
+
+    JScrollPane ScrollPane = new JScrollPane(textArea);
     public void applicantPanel() {
         applicantPanel.setLayout(new BoxLayout(applicantPanel, BoxLayout.PAGE_AXIS));
         applicantPanel.setBackground(Color.getHSBColor(66,66,66));
@@ -130,6 +136,9 @@ public class ScholarshipGUI extends JFrame {
         title.setFont(new Font("Proxima Nova", Font.ITALIC, 20));
         applicantPanel.add(title, BorderLayout.CENTER);
         this.getContentPane().add(applicantPanel);
+
+        ArrayList<String[]> res = dbHandler.applicantTable();
+        showTable(res, ScrollPane);
     }
 
 
@@ -208,7 +217,6 @@ public class ScholarshipGUI extends JFrame {
     }
 
     //////////// ALL PANEL METHODS ////////////////
-
 
 
 
