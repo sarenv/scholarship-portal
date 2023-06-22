@@ -231,15 +231,14 @@ public class DatabaseConnectionHandler {
 
     // Aggregation with HAVING
     // For each major requirement that has more than one scholarship, find the minimum GPA
-    public ArrayList<String[]> findMinGPAForEachMajor (int inputGPA) {
+    public ArrayList<String[]> findMinGPAForEachMajor () {
         ArrayList<String[]> result = new ArrayList<>();
         try {
             String query = "SELECT major, MIN(minimumGPA) AS GPA " +
                             "FROM SELECTIONCRITERIA SC " +
                             "GROUP BY major " +
-                            "HAVING COUNT(*) > 1 AND min(MINIMUMGPA) <= ?";
+                            "HAVING COUNT(*) > 1";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
-            ps.setInt(1, inputGPA);
 
             ResultSet rs = ps.executeQuery();
             String major = "";
