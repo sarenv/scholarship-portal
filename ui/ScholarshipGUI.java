@@ -3,6 +3,7 @@ package ui;
 import database.DatabaseConnectionHandler;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +27,7 @@ public class ScholarshipGUI extends JFrame {
     private JButton donorButton;
     public ScholarshipGUI() {
         // Initializers and this.adds go in here
+        dbHandler = new DatabaseConnectionHandler();
         initializeButtons();
         initializer();
         mainPanel();
@@ -122,11 +124,29 @@ public class ScholarshipGUI extends JFrame {
             revalidate();
         }
     }
+
+//    public class DisplayPanel extends JPanel {
+//        private JTable table;
+//
+//        public DisplayPanel(ArrayList<String[]> data) {
+//            setLayout(new BorderLayout());
+//
+//            DefaultTableModel model = new DefaultTableModel();
+//            table = new JTable(model);
+//
+//            for (int i = 0; i < data.get(0).length; i++) {
+//                model.addColumn("Column " + (i + 1));
+//            }
+//
+//            for (String[] row : data) {
+//                model.addRow(row);
+//            }
+//
+//            JScrollPane scrollPane = new JScrollPane(table);
+//            add(scrollPane, BorderLayout.CENTER);
+//        }
+//    }
     // applicant's panel
-
-    JTextArea textArea = new JTextArea();
-
-    JScrollPane ScrollPane = new JScrollPane(textArea);
     public void applicantPanel() {
         applicantPanel.setLayout(new BoxLayout(applicantPanel, BoxLayout.PAGE_AXIS));
         applicantPanel.setBackground(Color.getHSBColor(66,66,66));
@@ -137,8 +157,16 @@ public class ScholarshipGUI extends JFrame {
         applicantPanel.add(title, BorderLayout.CENTER);
         this.getContentPane().add(applicantPanel);
 
-        ArrayList<String[]> res = dbHandler.applicantTable();
-        showTable(res, ScrollPane);
+        ArrayList<String[]> data = dbHandler.applicantTable();
+
+//        DisplayPanel displayPanel = new DisplayPanel(data);
+//
+//        JFrame frame = new JFrame("Table Display Example");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(400, 300);
+//        frame.getContentPane().add(displayPanel);
+//        frame.setVisible(true);
+
     }
 
 
@@ -217,7 +245,24 @@ public class ScholarshipGUI extends JFrame {
     }
 
     //////////// ALL PANEL METHODS ////////////////
-
+    private void showTable(ArrayList<String[]> table, JScrollPane scrollPane) {
+        String[] columnNames = new String[table.get(0).length];
+        String[][] data = new String[table.size() - 1][table.get(0).length];
+        for (int i = 0; i < table.size(); i++) {
+            for (int j = 0; j < table.get(0).length; j++) {
+                if (i == 0) {
+                    columnNames[j] = table.get(0)[j];
+                } else {
+                    data[i - 1][j] = table.get(i)[j];
+                }
+            }
+        }
+        // Initializing the JTable
+        JTable jTable;
+        jTable = new JTable(data, columnNames);
+        jTable.setBounds(30, 40, 200, 300);
+        scrollPane.setViewportView(jTable);
+    }
 
 
     // More methods
