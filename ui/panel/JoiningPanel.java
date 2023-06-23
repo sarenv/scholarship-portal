@@ -102,7 +102,6 @@ public class JoiningPanel extends  BasePanel {
         JLabel statusLabel = new JLabel("Status");
         statusLabel.setPreferredSize(new Dimension(200,50));
         result.add(statusLabel);
-
         return result;
     }
 
