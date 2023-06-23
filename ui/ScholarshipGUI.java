@@ -39,10 +39,10 @@ public class ScholarshipGUI extends JFrame {
     private JButton scholarshipButton;
     private JButton committeeButton;
     private JButton superintendentButton;
+    private JButton applicationTableButton;
+
+    private JButton applicantTableButton;
     private JButton selectioncriteriaButton;
-    private JButton referenceletterButton;
-    private JButton ApplicationTableButton;
-    private JButton ApplicantTableButton;
     private JButton donorButton;
 
     private JButton projectionButton;
@@ -103,7 +103,7 @@ public class ScholarshipGUI extends JFrame {
     public void initializeButtons() {
         applicationButton = new JButton();
         applicantButton = new JButton();
-        referenceletterButton = new JButton();
+        applicationTableButton = new JButton();
         scholarshipButton = new JButton();
         donorButton = new JButton();
         selectioncriteriaButton = new JButton();
@@ -127,8 +127,8 @@ public class ScholarshipGUI extends JFrame {
         getApplicationButton();
         getScholarshipButton();
         getSelectioncriteriaButton();
-        getApplicationButton();
-        getReferenceletterButton();
+        getApplicantTableButton();
+        getApplicationTableButton();
         getSuperintendentButton();
         getDonorButton();
         getProjectionButton();
@@ -355,15 +355,13 @@ public class ScholarshipGUI extends JFrame {
 
     }
 
-
-    /* COMMITTEE */
     public void getApplicantTableButton() {
-        ApplicantTableButton.setPreferredSize(new Dimension(40,20));
-        ApplicantTableButton.setText("Applicant Table");
-        ApplicantTableButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
-        ApplicantTableButton.addActionListener(new goToApplicantTableListener(ApplicantTableButton));
-        ApplicantTableButton.setFocusable(false);
-        mainPanel.add(ApplicantTableButton, BorderLayout.CENTER);
+        applicantButton.setPreferredSize(new Dimension(40,20));
+        applicantButton.setText("Applicant Table");
+        applicantButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        applicantButton.addActionListener(new goToApplicantTableListener(applicantButton));
+        applicantButton.setFocusable(false);
+        mainPanel.add(applicantButton, BorderLayout.CENTER);
     }
 
     class goToApplicantTableListener implements ActionListener {
@@ -408,14 +406,13 @@ public class ScholarshipGUI extends JFrame {
     }
 
 
-    /* REFERENCE LETTER */
-    public void getReferenceletterButton() {
-        ApplicationTableButton.setPreferredSize(new Dimension(40,20));
-        ApplicationTableButton.setText("Application Table");
-        ApplicationTableButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
-        ApplicationTableButton.addActionListener(new goToApplicationTableListener(ApplicationTableButton));
-        ApplicationTableButton.setFocusable(false);
-        mainPanel.add(ApplicationTableButton, BorderLayout.CENTER);
+    public void getApplicationTableButton() {
+        applicationTableButton.setPreferredSize(new Dimension(40,20));
+        applicationTableButton.setText("Application Table");
+        applicationTableButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        applicationTableButton.addActionListener(new goToApplicationTableListener(applicationTableButton));
+        applicationTableButton.setFocusable(false);
+        mainPanel.add(applicationTableButton, BorderLayout.CENTER);
     }
 
     class goToApplicationTableListener implements ActionListener {
