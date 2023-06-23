@@ -111,6 +111,7 @@ public class ScholarshipGUI extends JFrame {
         committeeButton = new JButton();
         projectionButton = new JButton();
         managementButton = new JButton();
+        applicantTableButton = new JButton();
     }
 
 
@@ -356,12 +357,12 @@ public class ScholarshipGUI extends JFrame {
     }
 
     public void getApplicantTableButton() {
-        applicantButton.setPreferredSize(new Dimension(40,20));
-        applicantButton.setText("Applicant Table");
-        applicantButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
-        applicantButton.addActionListener(new goToApplicantTableListener(applicantButton));
-        applicantButton.setFocusable(false);
-        mainPanel.add(applicantButton, BorderLayout.CENTER);
+        applicantTableButton.setPreferredSize(new Dimension(40,20));
+        applicantTableButton.setText("Applicant Table");
+        applicantTableButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        applicantTableButton.addActionListener(new goToApplicantTableListener(applicantTableButton));
+        applicantTableButton.setFocusable(false);
+        mainPanel.add(applicantTableButton, BorderLayout.CENTER);
     }
 
     class goToApplicantTableListener implements ActionListener {
