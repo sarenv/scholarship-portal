@@ -40,13 +40,14 @@ public class SelectionPanel extends BasePanel {
     private void performSelect(String input) {
         qryString = input;
         ArrayList<Applicant> results = new ArrayList<>();
-//         results = DatabaseConnectionHandler.selection(input);
+        results = DatabaseConnectionHandler.selectApplicant(input);
 
         if (results.size() > 0) {
             resultsPanel.removeAll();               // to clear results
             for (Applicant a: results) {
                 resultsPanel.add(getResultsPanel(a));
             }
+            resultsPanel.setVisible(true);
             scrollPane.setVisible(true);
         } else {
             scrollPane.setVisible(false);
@@ -60,42 +61,42 @@ public class SelectionPanel extends BasePanel {
 
         // FOR ALL ATTRIBUTES
         JLabel applicantIDLabel = new JLabel(String.valueOf(applicant.getApplicantID()));
-        applicantIDLabel.setPreferredSize(new Dimension(300,10));
+        applicantIDLabel.setPreferredSize(new Dimension(50,50));
         result.add(applicantIDLabel);
 
         JLabel FNLabel = new JLabel(applicant.getFirstName());
-        FNLabel.setPreferredSize(new Dimension(300,10));
+        FNLabel.setPreferredSize(new Dimension(50,50));
         result.add(FNLabel);
 
         JLabel LNLabel = new JLabel(applicant.getLastName());
-        LNLabel.setPreferredSize(new Dimension(300,10));
+        LNLabel.setPreferredSize(new Dimension(50,50));
         result.add(LNLabel);
 
-        JLabel emailLabel = new JLabel(String.valueOf(applicant.getApplicantID()));
-        emailLabel.setPreferredSize(new Dimension(300,10));
+        JLabel emailLabel = new JLabel(String.valueOf(applicant.getEmail()));
+        emailLabel.setPreferredSize(new Dimension(50,50));
         result.add(emailLabel);
 
         JLabel schoolLabel = new JLabel(applicant.getSchool());
-        schoolLabel.setPreferredSize(new Dimension(300,10));
+        schoolLabel.setPreferredSize(new Dimension(50,50));
         result.add(schoolLabel);
 
         JLabel gpaLabel = new JLabel(String.valueOf(applicant.getGPA()));
-        gpaLabel.setPreferredSize(new Dimension(300,10));
+        gpaLabel.setPreferredSize(new Dimension(50,50));
         result.add(gpaLabel);
 
         // BUTTONS FOR THE OTHER QUERIES
         JButton updateButton = new JButton("Update");
-        updateButton.setPreferredSize(new Dimension(30,15));
+        updateButton.setPreferredSize(new Dimension(50,15));
         updateButton.addActionListener(e -> infoPrompt(applicant,this::update));
         result.add(updateButton);
 
         JButton deleteButton = new JButton("Delete");
-        updateButton.setPreferredSize(new Dimension(30,15));
+        updateButton.setPreferredSize(new Dimension(50,15));
         updateButton.addActionListener(e -> {
             DatabaseConnectionHandler.deleteApplicant(applicant.getApplicantID());
                 performSelect(qryString);
                 });
-        result.add(updateButton);
+        result.add(deleteButton);
 
         return  result;
     }
@@ -123,24 +124,17 @@ public class SelectionPanel extends BasePanel {
     }
 
     private void update(Applicant applicant) {
-//        try {
-// //            DatabaseConnectionHandler.update(applicant);
-//
-//            Applicant check = DatabaseConnectionHandler.getApplicantByID(applicant.getApplicantID());
-//            if (check != null && check.getApplicantID() == applicant.getApplicantID()) {
-//                performSelect(qryString);
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Update failed!");
-//            }
-//        }
-//        catch (Exception e) {
-//            JOptionPane.showMessageDialog(this, "Update failed!");
-//        }
+        try {
+            DatabaseConnectionHandler.updateApplicant(applicant);
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Update failed!");
+        }
     }
 
     private  void infoPrompt(Applicant applicant, FunctionCallback callback) {
         JFrame infoFrame = new JFrame("Applicant Info");
-        infoFrame.setSize(new Dimension(500,200));
+        infoFrame.setSize(new Dimension(1000,500));
         infoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         infoFrame.setVisible(true);
 
@@ -171,7 +165,7 @@ public class SelectionPanel extends BasePanel {
             fnTextField.setText(String.valueOf(applicant.getFirstName()));
             lnTextField.setText(String.valueOf(applicant.getLastName()));
             emailTextField.setText(String.valueOf(applicant.getEmail()));
-            schoolTextField.setText(String.valueOf(applicant.getGPA()));
+            schoolTextField.setText(String.valueOf(applicant.getSchool()));
             gpaTextField.setText(String.valueOf(applicant.getGPA()));
             idTextField.setEnabled(false);
         }

@@ -9,6 +9,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class ScholarshipGUI extends JFrame {
@@ -45,6 +47,19 @@ public class ScholarshipGUI extends JFrame {
 
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (dbHandler != null) {
+                    dbHandler.close();
+                    System.out.println("Database connection closed.");
+                }
+                dispose(); // Close the frame
+                System.exit(0); // Terminate the application
+            }
+        });
         this.setTitle("Scholarship Search");
         this.setFont(new Font("Proxima Nova", Font.BOLD, 40));
         this.setBounds(375, 10, 300, 50);
@@ -58,6 +73,7 @@ public class ScholarshipGUI extends JFrame {
 
         //this.add(layoutPanel);
         //initializer();
+
 
     }
 

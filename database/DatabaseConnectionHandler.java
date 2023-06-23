@@ -6,11 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.lang.ClassNotFoundException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 import ca.ubc.cs304.util.PrintablePreparedStatement;
@@ -88,7 +85,7 @@ public class DatabaseConnectionHandler {
     // DELETE QUERY
     public static void deleteApplicant(int applicantID) {
         try {
-            String query = "DELETE FROM application WHERE applicationID = ?";
+            String query = "DELETE FROM application A WHERE A.applicationID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setInt(1, applicantID);
 
@@ -148,18 +145,23 @@ public class DatabaseConnectionHandler {
     }
 
     // UPDATE QUERY
-    public void updateSelectionCriteria(int id, float gpa, String maj, int fi) {
+    public static void updateApplicant(Applicant applicant) {
         try {
-            String query = "UPDATE SelectionCriteria SET minimumGPA = ?, SET major = ?, SET familyIncome = ?,  WHERE criteriaID = ?";
+            String query = "UPDATE Applicant SET firstName = ?" +
+                    "SET lastName = ? " +
+                    "SET applicantEmail = ?"  +
+                    "SET ApplicantSchool = ?" +
+                    " WHERE applicantID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setFloat(1, gpa);
-            ps.setString(2, maj);
-            ps.setInt(3, fi);
-            ps.setInt(4, id);
+            ps.setString(1, applicant.getFirstName());
+            ps.setString(2, applicant.getLastName());
+            ps.setString(3, applicant.getEmail());
+            ps.setString(4, applicant.getSchool());
+            ps.setInt(5, applicant.getApplicantID());
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
-                System.out.println(WARNING_TAG + " SelectionCriteria " + id + " does not exist!");
+                System.out.println(WARNING_TAG + " Applicant " + applicant.getApplicantID() + " does not exist!");
             }
 
             connection.commit();
@@ -199,15 +201,14 @@ public class DatabaseConnectionHandler {
         return result;
     }
     // JOIN QUERY
-    public ArrayList<String[]> findApplicationStatus(int applicantID) {
+    public ArrayList<String[]> findApplicationStatus() {
         ArrayList<String[]> result = new ArrayList<>();
         try {
             String query = "SELECT  AT.applicantID, AC.applicationID, E.status " +
                     "FROM Applicant AT, Application AC, EVALUATES E " +
-                    "WHERE AT.applicantID = AC.applicantID and AC.applicationID = E.applicationID and AT.applicantID = ?";
+                    "WHERE AT.applicantID = AC.applicantID and AC.applicationID = E.applicationID";
 
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
-            ps.setInt(1, applicantID);
 
             ResultSet rs = ps.executeQuery();
             String applicationID = "";
@@ -301,6 +302,41 @@ public class DatabaseConnectionHandler {
         return result;
     }
 
+    public static ArrayList<Applicant> selectApplicant(String input) {
+        ArrayList<Applicant> result = new ArrayList<>();
+        try {
+            String query = "SELECT * " +
+                    "FROM Applicant A " +
+                    "WHERE LOWER(A.applicantSchool) LIKE  ? OR LOWER(A.applicantEmail) LIKE ? OR LOWER(A.firstName) LIKE ? OR LOWER(A.lastName) LIKE ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
+            ps.setString(1, "%" + input.toLowerCase() +"%");
+            ps.setString(2, "%" + input.toLowerCase() +"%");
+            ps.setString(3, "%" + input.toLowerCase() +"%");
+            ps.setString(4, "%" + input.toLowerCase() +"%");
+            ResultSet rs = ps.executeQuery();
+            Integer applicantID = 0;
+            String firstName = "";
+            String lastName = "";
+            String email = "";
+            String school = "";
+            Float GPA = 0.0F;
+            while (rs.next()) {
+                applicantID = rs.getInt("applicantID");
+                firstName = rs.getString("firstName");
+                lastName = rs.getString("lastName");
+                email = rs.getString("applicantEmail");
+                school = rs.getString("applicantSchool");
+                GPA = rs.getFloat("applicantGPA");
+                result.add(new Applicant(applicantID,firstName,lastName,email,school,GPA));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " OH NOOOO" + e.getMessage());
+        }
+        return result;
+    }
+
 
     // Division using WHERE EXISTS
     // Finding the applicants who submitted an application
@@ -388,6 +424,7 @@ public class DatabaseConnectionHandler {
         return res;
 
     }
+
 
     private static void rollbackConnection() {
         try  {
