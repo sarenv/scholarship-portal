@@ -5,6 +5,7 @@ import ui.ScholarshipGUI;
 import model.*;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -15,10 +16,6 @@ public class ManagementPanel extends BasePanel {
     private String qryString;
     public ManagementPanel(ScholarshipGUI scholarshipGUI)  {
         super(scholarshipGUI);
-    }
-
-    private interface FunctionCallback {
-        void apply(Applicant applicant);
     }
 
     @Override
@@ -36,12 +33,15 @@ public class ManagementPanel extends BasePanel {
     }
 
     private void performSelect(String input) {
+
+
         qryString = input;
         ArrayList<Applicant> results = new ArrayList<>();
         results = DatabaseConnectionHandler.selectApplicant(input);
 
         if (results.size() > 0) {
             resultsPanel.removeAll();               // to clear results
+            resultsPanel.add(getColumnNamePanel());
             for (Applicant a: results) {
                 resultsPanel.add(getResultsPanel(a));
             }
@@ -52,6 +52,35 @@ public class ManagementPanel extends BasePanel {
         }
         revalidate();
         repaint();
+    }
+
+    private JPanel getColumnNamePanel() {
+        JPanel result = new JPanel(new FlowLayout(FlowLayout.LEFT,5,5));
+        JLabel applicantIDLabel = new JLabel(String.valueOf("ApplicationID"));
+        applicantIDLabel.setPreferredSize(new Dimension(200,50));
+        result.add(applicantIDLabel);
+
+        JLabel FNLabel = new JLabel("First Name");
+        FNLabel.setPreferredSize(new Dimension(200,50));
+        result.add(FNLabel);
+
+        JLabel LNLabel = new JLabel("Last Name");
+        LNLabel.setPreferredSize(new Dimension(200,50));
+        result.add(LNLabel);
+
+        JLabel emailLabel = new JLabel(String.valueOf("Email Address"));
+        emailLabel.setPreferredSize(new Dimension(200,50));
+        result.add(emailLabel);
+
+        JLabel schoolLabel = new JLabel("School");
+        schoolLabel.setPreferredSize(new Dimension(200,50));
+        result.add(schoolLabel);
+
+        JLabel gpaLabel = new JLabel(String.valueOf("Current GPA"));
+        gpaLabel.setPreferredSize(new Dimension(200,50));
+        result.add(gpaLabel);
+
+        return result;
     }
 
     private JPanel getResultsPanel (Applicant applicant) {
@@ -85,13 +114,14 @@ public class ManagementPanel extends BasePanel {
         // BUTTONS FOR THE OTHER QUERIES
         JButton updateButton = new JButton("Update");
         updateButton.setPreferredSize(new Dimension(100,15));
-        updateButton.addActionListener(e -> infoPrompt(applicant,this::update));
+        updateButton.addActionListener(e -> infoPrompt(applicant));
         result.add(updateButton);
 
         JButton deleteButton = new JButton("Delete");
         deleteButton.setPreferredSize(new Dimension(100,15));
         deleteButton.addActionListener(e -> {
             DatabaseConnectionHandler.deleteApplicant(applicant.getApplicantID());
+            JOptionPane.showMessageDialog(this, "Applicant " + applicant.getApplicantID() + "'s data has been deleted!");
                 performSelect(qryString);
                 });
         result.add(deleteButton);
@@ -122,15 +152,12 @@ public class ManagementPanel extends BasePanel {
     }
 
     private void update(Applicant applicant) {
-        try {
             DatabaseConnectionHandler.updateApplicant(applicant);
-        }
-        catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Update failed!");
-        }
+            performSelect(qryString);
+
     }
 
-    private  void infoPrompt(Applicant applicant, FunctionCallback callback) {
+    private  void infoPrompt(Applicant applicant) {
         JFrame infoFrame = new JFrame("Applicant Info");
         infoFrame.setSize(new Dimension(1000,500));
         infoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -176,11 +203,11 @@ public class ManagementPanel extends BasePanel {
                 String ln = String.valueOf(lnTextField.getText());
                 String email = String.valueOf(emailTextField.getText());
                 String school = String.valueOf(schoolTextField.getText());
-                Integer gpa = Integer.valueOf(gpaTextField.getText());
+                Float gpa = Float.valueOf(gpaTextField.getText());
 
-                callback.apply(new Applicant(id,fn,ln,email,school,gpa));
+                update(new Applicant(id, fn,ln,email,school,gpa));
             } catch (Exception exception) {
-                JOptionPane.showMessageDialog(this, "Update failed!");
+                JOptionPane.showMessageDialog(this, "Parse Failed!");
             }
             infoFrame.dispose();
         });

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 import ca.ubc.cs304.util.PrintablePreparedStatement;
@@ -177,10 +178,11 @@ public class DatabaseConnectionHandler {
     // UPDATE QUERY
     public static void updateApplicant(Applicant applicant) {
         try {
-            String query = "UPDATE Applicant SET firstName = ?" +
-                    "SET lastName = ? " +
-                    "SET applicantEmail = ?"  +
-                    "SET ApplicantSchool = ?" +
+            String query = "UPDATE Applicant " +
+                    "SET firstName = ?," +
+                    " lastName = ?," +
+                    " applicantEmail = ?,"  +
+                    " ApplicantSchool = ?" +
                     " WHERE applicantID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setString(1, applicant.getFirstName());
@@ -228,6 +230,32 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
 
+        return result;
+    }
+
+    public static ArrayList<String[]> projectTables(String table, ArrayList<String> attributes) {
+        ArrayList<String[]> result = new ArrayList<>();
+        try {
+                String query = "SELECT ? FROM ?";
+                PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
+             ps.setString(1, attributes.get(0));
+             ps.setString(2,table );
+
+                 ResultSet rs = ps.executeQuery();
+                 String attribute1 = "";
+
+        while (rs.next()) {
+            String[] dummy = new String[1];
+            attribute1 = String.valueOf(attributes.get(0));
+            dummy[0] = attribute1;
+            result.add(dummy);
+        }
+
+        rs.close();
+        ps.close();
+    } catch (SQLException e) {
+        System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+    }
         return result;
     }
     // JOIN QUERY

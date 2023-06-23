@@ -1,6 +1,7 @@
 
 package ui.panel;
 
+import database.DatabaseConnectionHandler;
 import ui.ScholarshipGUI;
 
 import javax.swing.*;
@@ -60,7 +61,7 @@ public class ProjectionPanel extends BasePanel {
             JCheckBox checkbox = new JCheckBox(col);
             checkboxesPanel.add(checkbox);
         }
-        JButton projectionButton = new JButton("Projection");
+        JButton projectionButton = new JButton("Project!");
         projectionButton.addActionListener(e-> {
             ArrayList<String> columns = new ArrayList<>();
             for (Component c: checkboxesPanel.getComponents()) {
@@ -71,8 +72,7 @@ public class ProjectionPanel extends BasePanel {
                     }
                 }
             }
-            // CHANGE HERE NEEDS TO RETURN SMTH
-             ArrayList<String[]> result = null;
+             ArrayList<String[]> result = DatabaseConnectionHandler.projectTables(selectionTable,columns);
             generateProjection(selectionTable,result,columns);
         });
         checkboxesPanel.add(projectionButton);

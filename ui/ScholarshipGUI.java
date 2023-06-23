@@ -121,7 +121,7 @@ public class ScholarshipGUI extends JFrame {
         mainPanel.setBackground(Color.getHSBColor(66,66,66));
         mainPanel.setPreferredSize(new Dimension(800,350));
         mainPanel.setMaximumSize(new Dimension(800, 350));
-        JLabel question = new JLabel("Choose one table: ", JLabel.CENTER);
+        JLabel question = new JLabel("Choose: ", JLabel.CENTER);
         question.setFont(new Font("Proxima Nova", Font.PLAIN, 25));
         mainPanel.add(question, BorderLayout.CENTER);
         getApplicantButton();
@@ -512,7 +512,7 @@ public class ScholarshipGUI extends JFrame {
     // ALL Management STUFF IS HERE
     public void getManagementButton() {
         managementButton.setPreferredSize(new Dimension(50,20));
-        managementButton.setText("Manage Applicants (Insert,Delete,Update)");
+        managementButton.setText("Manage Applicants (Select,Delete,Update)");
         managementButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
         managementButton.addActionListener( new gotoManagementListener(managementButton));
         managementButton.setFocusable(false);
