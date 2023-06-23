@@ -72,6 +72,36 @@ public class DatabaseConnectionHandler {
 
     }
 
+    public ArrayList<String[]> applicationTable() {
+        ArrayList<String[]> res = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM Application";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                String temp1 = String.valueOf(rs.getInt("ApplicationID"));
+                String temp2 = String.valueOf(rs.getInt("ApplicantID"));
+                String temp3 = String.valueOf(rs.getDate("deadline"));
+                String[] temp4 = new String[3];
+                temp4[0] = temp1;
+                temp4[1] = temp2;
+                temp4[2] = temp3;
+                res.add(temp4);
+            }
+
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+
+        return res;
+
+    }
+
     public void close() {
         try {
             if (connection != null) {

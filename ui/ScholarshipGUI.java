@@ -20,6 +20,10 @@ public class ScholarshipGUI extends JFrame {
     private JPanel mainPanel = new JPanel();;
     private JPanel applicantPanel = new JPanel();
 
+    private JPanel ApplicantTablePanel = new JPanel();
+
+    private JPanel ApplicationTablePanel = new JPanel();
+
     private JPanel applicationPanel = new JPanel();
 
     private JPanel scholarshipPanel = new JPanel();
@@ -37,6 +41,8 @@ public class ScholarshipGUI extends JFrame {
     private JButton superintendentButton;
     private JButton selectioncriteriaButton;
     private JButton referenceletterButton;
+    private JButton ApplicationTableButton;
+    private JButton ApplicantTableButton;
     private JButton donorButton;
 
     private JButton projectionButton;
@@ -121,7 +127,7 @@ public class ScholarshipGUI extends JFrame {
         getApplicationButton();
         getScholarshipButton();
         getSelectioncriteriaButton();
-        getCommitteeButton();
+        getApplicationButton();
         getReferenceletterButton();
         getSuperintendentButton();
         getDonorButton();
@@ -351,22 +357,106 @@ public class ScholarshipGUI extends JFrame {
 
 
     /* COMMITTEE */
-    public void getCommitteeButton() {
-        committeeButton.setPreferredSize(new Dimension(40,20));
-        committeeButton.setText("Unused");
-        committeeButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
-        committeeButton.setFocusable(false);
-        mainPanel.add(committeeButton, BorderLayout.CENTER);
+    public void getApplicantTableButton() {
+        ApplicantTableButton.setPreferredSize(new Dimension(40,20));
+        ApplicantTableButton.setText("Applicant Table");
+        ApplicantTableButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        ApplicantTableButton.addActionListener(new goToApplicantTableListener(ApplicantTableButton));
+        ApplicantTableButton.setFocusable(false);
+        mainPanel.add(ApplicantTableButton, BorderLayout.CENTER);
+    }
+
+    class goToApplicantTableListener implements ActionListener {
+        private JButton jbutton;
+        public goToApplicantTableListener(JButton button) {
+            this.jbutton = button;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getContentPane().remove(mainPanel);
+            ApplicantTablePanel();
+
+            repaint();
+            revalidate();
+        }
+    }
+
+    public void ApplicantTablePanel() {
+        ApplicantTablePanel.setLayout(new BoxLayout(ApplicantTablePanel, BoxLayout.PAGE_AXIS));
+        ApplicantTablePanel.setBackground(Color.getHSBColor(66,66,66));
+        ApplicantTablePanel.setPreferredSize(new Dimension(800,350));
+        ApplicantTablePanel.setMaximumSize(new Dimension(800, 350));
+        JLabel title = new JLabel("Applicant Table:  ", JLabel.CENTER);
+        title.setFont(new Font("Proxima Nova", Font.ITALIC, 20));
+        ApplicantTablePanel.add(title, BorderLayout.CENTER);
+        this.getContentPane().add(ApplicantTablePanel);
+
+        ArrayList<String[]> res = dbHandler.applicantTable();
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.setColumnIdentifiers(new String[]{"ApplicantID", "firstName", "lastName", "applicantEmail", "applicantSchool", "applicantGPA"});
+        for (String[] r : res) {
+            tableModel.addRow(r);
+        }
+
+        JTable table = new JTable(tableModel);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        ApplicantTablePanel.add(scrollPane, BorderLayout.CENTER);
+
+        this.getContentPane().add(ApplicantTablePanel);
+
     }
 
 
     /* REFERENCE LETTER */
     public void getReferenceletterButton() {
-        referenceletterButton.setPreferredSize(new Dimension(40,20));
-        referenceletterButton.setText("Unused");
-        referenceletterButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
-        referenceletterButton.setFocusable(false);
-        mainPanel.add(referenceletterButton, BorderLayout.CENTER);
+        ApplicationTableButton.setPreferredSize(new Dimension(40,20));
+        ApplicationTableButton.setText("Application Table");
+        ApplicationTableButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        ApplicationTableButton.addActionListener(new goToApplicationTableListener(ApplicationTableButton));
+        ApplicationTableButton.setFocusable(false);
+        mainPanel.add(ApplicationTableButton, BorderLayout.CENTER);
+    }
+
+    class goToApplicationTableListener implements ActionListener {
+        private JButton jbutton;
+        public goToApplicationTableListener(JButton button) {
+            this.jbutton = button;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getContentPane().remove(mainPanel);
+            ApplicationTablePanel();
+
+            repaint();
+            revalidate();
+        }
+    }
+
+    public void ApplicationTablePanel() {
+        ApplicationTablePanel.setLayout(new BoxLayout(ApplicationTablePanel, BoxLayout.PAGE_AXIS));
+        ApplicationTablePanel.setBackground(Color.getHSBColor(66,66,66));
+        ApplicationTablePanel.setPreferredSize(new Dimension(800,350));
+        ApplicationTablePanel.setMaximumSize(new Dimension(800, 350));
+        JLabel title = new JLabel("Application Table:  ", JLabel.CENTER);
+        title.setFont(new Font("Proxima Nova", Font.ITALIC, 20));
+        ApplicationTablePanel.add(title, BorderLayout.CENTER);
+        this.getContentPane().add(ApplicationTablePanel);
+
+        ArrayList<String[]> res = dbHandler.applicationTable();
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.setColumnIdentifiers(new String[]{"ApplicationID", "ApplicantID", "deadline"});
+        for (String[] r : res) {
+            tableModel.addRow(r);
+        }
+
+        JTable table = new JTable(tableModel);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        ApplicantTablePanel.add(scrollPane, BorderLayout.CENTER);
+
+        this.getContentPane().add(ApplicantTablePanel);
+
     }
 
 
