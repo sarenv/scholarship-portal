@@ -1,6 +1,7 @@
 package ui;
 
 import database.DatabaseConnectionHandler;
+import model.Application;
 import ui.panel.ProjectionPanel;
 import ui.panel.ManagementPanel;
 
@@ -12,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ScholarshipGUI extends JFrame {
     // Put buttons and shit and instantiate other shit here
@@ -40,6 +42,8 @@ public class ScholarshipGUI extends JFrame {
     private JButton committeeButton;
     private JButton superintendentButton;
     private JButton applicationTableButton;
+
+    private JButton insertButton;
 
     private JButton applicantTableButton;
     private JButton selectioncriteriaButton;
@@ -112,6 +116,9 @@ public class ScholarshipGUI extends JFrame {
         projectionButton = new JButton();
         managementButton = new JButton();
         applicantTableButton = new JButton();
+        insertButton = new JButton();
+
+
     }
 
 
@@ -134,6 +141,7 @@ public class ScholarshipGUI extends JFrame {
         getDonorButton();
         getProjectionButton();
         getManagementButton();
+        getInsertButton();
         this.getContentPane().add(mainPanel);
         return mainPanel;
     }
@@ -374,7 +382,6 @@ public class ScholarshipGUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             getContentPane().remove(mainPanel);
             ApplicantTablePanel();
-
             repaint();
             revalidate();
         }
@@ -532,6 +539,70 @@ public class ScholarshipGUI extends JFrame {
             revalidate();
         }
     }
+
+    // INSERTION
+    // INSERTIONN
+    public void getInsertButton() {
+        insertButton.setPreferredSize(new Dimension(50,20));
+        insertButton.setText("Insert");
+        insertButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        insertButton.addActionListener(e->infoPrompt()) ;
+        insertButton.setFocusable(false);
+        mainPanel.add(insertButton, BorderLayout.CENTER);
+    }
+    private  void infoPrompt() {
+        JFrame infoFrame = new JFrame("Application Info");
+        infoFrame.setSize(new Dimension(1000,500));
+        infoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        infoFrame.setVisible(true);
+
+        JPanel infoPanel = new JPanel(new GridLayout(4,2,10,10));
+
+        // Attribute Labels + Fields
+        JLabel applicationIDLabel = new JLabel("Application ID:");
+        JTextField applicationIDTextField = new JTextField(20);
+
+        JLabel applicantIDLabel = new JLabel("Applicant ID:");
+        JTextField applicantIDTextField = new JTextField(20);
+
+        JLabel deadlineLabel = new JLabel("Deadline (dd/mm/yyyy FORMAT PLEASE):");
+        JTextField deadlineTextField = new JTextField(70);
+
+        int eyeDee = ThreadLocalRandom.current().nextInt(100000, 999999 + 1);
+        applicationIDTextField.setText(String.valueOf(eyeDee));
+        applicationIDTextField.setEnabled(false);
+
+
+        JButton insertButton = new JButton("Insert");
+        insertButton.addActionListener(e -> {
+            try {
+                Integer tionID = Integer.valueOf(applicationIDTextField.getText());
+                Integer antID = Integer.valueOf(applicantIDTextField.getText());
+                String deadline = String.valueOf(deadlineTextField.getText());
+
+                DatabaseConnectionHandler.insertApplication(new Application(tionID,antID,deadline));
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(this, "Insert Failed!");
+            }
+            infoFrame.dispose();
+        });
+
+        infoPanel.add(applicationIDLabel);
+        infoPanel.add(applicationIDTextField);
+        infoPanel.add(applicantIDLabel);
+        infoPanel.add(applicantIDTextField);
+        infoPanel.add(deadlineLabel);
+        infoPanel.add(deadlineTextField);
+
+        infoPanel.add(insertButton);
+        infoPanel.add(new JLabel());
+
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+        infoFrame.add(infoPanel);
+    }
+
+
+
 }
 
 

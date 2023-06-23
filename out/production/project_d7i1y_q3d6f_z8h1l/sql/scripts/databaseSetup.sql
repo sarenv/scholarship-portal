@@ -29,7 +29,7 @@ CREATE TABLE Application
 (
     ApplicationID INTEGER,
     ApplicantID   INTEGER,
-    deadline      DATE,
+    deadline      VARCHAR(40),
     PRIMARY KEY (ApplicationID),
     FOREIGN KEY (ApplicantID)
         REFERENCES Applicant (ApplicantID)
@@ -60,7 +60,7 @@ CREATE TABLE Renewable
 (
     scholarshipID INTEGER NOT NULL,
     amount        INTEGER,
-    dateOfRenewal DATE,
+    dateOfRenewal VARCHAR(40),
     donorID       INTEGER,
     type VARCHAR(20) DEFAULT  'Renewable',
     PRIMARY KEY (scholarshipID),
@@ -170,11 +170,11 @@ INSERT   INTO Applicant VALUES (55555, 'Michael', 'Michaels', 'mmichaels@ubc.ca'
 INSERT   INTO Applicant VALUES (98452, 'Elizabeth', 'Queen', 'lizzie@ubristol.uk', 'University of Bristol', 4.20);
 INSERT   INTO Applicant VALUES (12345, 'Seuss', 'Doctor', 'heisadoctor@uvic.ca', 'University of Victoria', 3.52);
 
-INSERT INTO Application VALUES (69421, 12348, TO_DATE('29/03/2021','dd/mm/yyyy'));
-INSERT INTO Application VALUES(11111,12348, TO_DATE('08/09/20','dd/mm/yyyy'));
-INSERT INTO Application VALUES(90002,55555, TO_DATE('31/01/22','dd/mm/yyyy'));
-INSERT INTO Application VALUES(67492,98452, TO_DATE('02/04/23','dd/mm/yyyy'));
-INSERT INTO Application VALUES(96477,45636, TO_DATE('15/11/21','dd/mm/yyyy'));
+INSERT INTO Application VALUES (69421, 12348, '29/03/2021');
+INSERT INTO Application VALUES(11111,12348,'08/09/20');
+INSERT INTO Application VALUES(90002,55555, '31/01/22');
+INSERT INTO Application VALUES(67492,98452,'02/04/23');
+INSERT INTO Application VALUES(96477,45636,'15/11/21');
 
 INSERT   INTO Donor VALUES (1000);
 INSERT   INTO Donor VALUES(1001);

@@ -143,6 +143,7 @@ public class DatabaseConnectionHandler {
             ps.setInt(2, application.getApplicantID());
             ps.setString(3, application.getDeadline());
 
+
             ps.executeUpdate();
             connection.commit();
 
