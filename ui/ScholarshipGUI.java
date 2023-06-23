@@ -25,7 +25,6 @@ public class ScholarshipGUI extends JFrame {
 
     private JPanel ApplicantTablePanel = new JPanel();
 
-    private JPanel ApplicationTablePanel = new JPanel();
 
     private JPanel applicationPanel = new JPanel();
 
@@ -42,7 +41,6 @@ public class ScholarshipGUI extends JFrame {
     private JButton applicantButton;
     private JButton applicationButton;
     private JButton scholarshipButton;
-    private JButton applicationTableButton;
 
     private JButton insertButton;
 
@@ -109,7 +107,6 @@ public class ScholarshipGUI extends JFrame {
     public void initializeButtons() {
         applicationButton = new JButton();
         applicantButton = new JButton();
-        applicationTableButton = new JButton();
         scholarshipButton = new JButton();
         donorButton = new JButton();
         selectioncriteriaButton = new JButton();
@@ -137,7 +134,6 @@ public class ScholarshipGUI extends JFrame {
         getScholarshipButton();
         getSelectioncriteriaButton();
         getApplicantTableButton();
-        getApplicationTableButton();
         getJoiningButton();
         getProjectionButton();
         getManagementButton();
@@ -414,55 +410,11 @@ public class ScholarshipGUI extends JFrame {
     }
 
 
-    public void getApplicationTableButton() {
-        applicationTableButton.setPreferredSize(new Dimension(40,20));
-        applicationTableButton.setText("Application Table");
-        applicationTableButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
-        applicationTableButton.addActionListener(new goToApplicationTableListener(applicationTableButton));
-        applicationTableButton.setFocusable(false);
-        mainPanel.add(applicationTableButton, BorderLayout.CENTER);
-    }
 
-    class goToApplicationTableListener implements ActionListener {
-        private JButton jbutton;
-        public goToApplicationTableListener(JButton button) {
-            this.jbutton = button;
-        }
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            getContentPane().remove(mainPanel);
-            ApplicationTablePanel();
 
-            repaint();
-            revalidate();
-        }
-    }
 
-    public void ApplicationTablePanel() {
-        ApplicationTablePanel.setLayout(new BoxLayout(ApplicationTablePanel, BoxLayout.PAGE_AXIS));
-        ApplicationTablePanel.setBackground(Color.getHSBColor(66,66,66));
-        ApplicationTablePanel.setPreferredSize(new Dimension(800,350));
-        ApplicationTablePanel.setMaximumSize(new Dimension(800, 350));
-        JLabel title = new JLabel("Application Table:  ", JLabel.CENTER);
-        title.setFont(new Font("Proxima Nova", Font.ITALIC, 20));
-        ApplicationTablePanel.add(title, BorderLayout.CENTER);
-        this.getContentPane().add(ApplicationTablePanel);
 
-        ArrayList<String[]> res = dbHandler.applicationTable();
-        DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new String[]{"ApplicationID", "ApplicantID", "deadline"});
-        for (String[] r : res) {
-            tableModel.addRow(r);
-        }
 
-        JTable table = new JTable(tableModel);
-
-        JScrollPane scrollPane = new JScrollPane(table);
-        ApplicantTablePanel.add(scrollPane, BorderLayout.CENTER);
-
-        this.getContentPane().add(ApplicantTablePanel);
-
-    }
 
 
     /* SUPERINTENDENT */
@@ -590,6 +542,7 @@ public class ScholarshipGUI extends JFrame {
                 String deadline = String.valueOf(deadlineTextField.getText());
 
                 DatabaseConnectionHandler.insertApplication(new Application(tionID,antID,deadline));
+                JOptionPane.showMessageDialog(this, "Insert Passed!");
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(this, "Insert Failed!");
             }

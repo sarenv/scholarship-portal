@@ -153,6 +153,7 @@ public class ManagementPanel extends BasePanel {
 
     private void update(Applicant applicant) {
             DatabaseConnectionHandler.updateApplicant(applicant);
+        JOptionPane.showMessageDialog(this, "Update Successful!");
             performSelect(qryString);
 
     }
