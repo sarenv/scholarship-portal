@@ -85,13 +85,13 @@ public class DatabaseConnectionHandler {
     // DELETE QUERY
     public static void deleteApplicant(int applicantID) {
         try {
-            String query = "DELETE FROM application A WHERE A.applicationID = ?";
+            String query = "DELETE FROM Applicant A WHERE A.applicantID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setInt(1, applicantID);
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
-                System.out.println(WARNING_TAG + " Application " + applicantID + " does not exist!");
+                System.out.println(WARNING_TAG + " Applicant " + applicantID + " does not exist!");
             }
 
             connection.commit();

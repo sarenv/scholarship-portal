@@ -61,38 +61,38 @@ public class SelectionPanel extends BasePanel {
 
         // FOR ALL ATTRIBUTES
         JLabel applicantIDLabel = new JLabel(String.valueOf(applicant.getApplicantID()));
-        applicantIDLabel.setPreferredSize(new Dimension(50,50));
+        applicantIDLabel.setPreferredSize(new Dimension(200,50));
         result.add(applicantIDLabel);
 
         JLabel FNLabel = new JLabel(applicant.getFirstName());
-        FNLabel.setPreferredSize(new Dimension(50,50));
+        FNLabel.setPreferredSize(new Dimension(200,50));
         result.add(FNLabel);
 
         JLabel LNLabel = new JLabel(applicant.getLastName());
-        LNLabel.setPreferredSize(new Dimension(50,50));
+        LNLabel.setPreferredSize(new Dimension(200,50));
         result.add(LNLabel);
 
         JLabel emailLabel = new JLabel(String.valueOf(applicant.getEmail()));
-        emailLabel.setPreferredSize(new Dimension(50,50));
+        emailLabel.setPreferredSize(new Dimension(200,50));
         result.add(emailLabel);
 
         JLabel schoolLabel = new JLabel(applicant.getSchool());
-        schoolLabel.setPreferredSize(new Dimension(50,50));
+        schoolLabel.setPreferredSize(new Dimension(200,50));
         result.add(schoolLabel);
 
         JLabel gpaLabel = new JLabel(String.valueOf(applicant.getGPA()));
-        gpaLabel.setPreferredSize(new Dimension(50,50));
+        gpaLabel.setPreferredSize(new Dimension(200,50));
         result.add(gpaLabel);
 
         // BUTTONS FOR THE OTHER QUERIES
         JButton updateButton = new JButton("Update");
-        updateButton.setPreferredSize(new Dimension(50,15));
+        updateButton.setPreferredSize(new Dimension(100,15));
         updateButton.addActionListener(e -> infoPrompt(applicant,this::update));
         result.add(updateButton);
 
         JButton deleteButton = new JButton("Delete");
-        updateButton.setPreferredSize(new Dimension(50,15));
-        updateButton.addActionListener(e -> {
+        deleteButton.setPreferredSize(new Dimension(100,15));
+        deleteButton.addActionListener(e -> {
             DatabaseConnectionHandler.deleteApplicant(applicant.getApplicantID());
                 performSelect(qryString);
                 });
