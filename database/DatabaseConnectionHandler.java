@@ -2,6 +2,7 @@
 // Citing CPSC 304 java project as primary source!!!
 package database;
 
+import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -206,68 +207,51 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    // PROJECTION QUERY
-    // choose any number of attributes (or columns) from a table (or relation)
-    public ArrayList<String[]> projectionTable(ArrayList<String> columns, String relation) {
-        ArrayList<String[]> result = new ArrayList<>();
 
+
+    // CODEBASE INSPIRED/MODIFIED USING: https://stackoverflow.com/questions/59701343/loop-through-a-table-based-on-multiple-conditions
+    public static ArrayList<ArrayList<String>> projectTables(String table, ArrayList<String> attributes) {
+        ArrayList<ArrayList<String>> result = new ArrayList<>();
+        if(attributes.isEmpty() || table == null || table == ""){
+            return null;
+        }
         try {
-            String colStr = String.join(", " + columns); // different types of columns
-            String query = "SELECT " + colStr + " FROM " + relation;
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            String col = attributes.get(0);
+            for (int i = 1; i < attributes.size(); i++) {
+                col += ", " + attributes.get(i);
+            }
+            String query = String.format("SELECT %s FROM %s", col, table);
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
             ResultSet rs = ps.executeQuery();
 
+
             while (rs.next()) {
-                String[] elements = new String[columns.size()]; // have an emtpy array of selected columns
-                for (int i = 0; i < columns.size(); i++) { // iterate through all the possible columns, i is the current column index
-                    elements[i] = rs.getString(columns.get(i)); // using the query, put the string of particular column and put it in the array of selected columns
+
+                ArrayList<String> temp = new ArrayList<>();
+                for (int i = 0; i < attributes.size(); i++) {
+                    Object a;
+                        a = rs.getObject(attributes.get(i));
+                    String s = a.toString();
+                    temp.add(s);
+                    System.out.println(a);
                 }
-                result.add(elements);
+                result.add(temp);
             }
-
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        } catch (SQLException s) {
+            System.out.println(s.getMessage());
         }
-
-        return result;
-    }
-
-    public static ArrayList<String[]> projectTables(String table, ArrayList<String> attributes) {
-        ArrayList<String[]> result = new ArrayList<>();
-        try {
-                String query = "SELECT ? FROM ?";
-                PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
-             ps.setString(1, attributes.get(0));
-             ps.setString(2,table );
-
-                 ResultSet rs = ps.executeQuery();
-                 String attribute1 = "";
-
-        while (rs.next()) {
-            String[] dummy = new String[1];
-            attribute1 = String.valueOf(attributes.get(0));
-            dummy[0] = attribute1;
-            result.add(dummy);
-        }
-
-        rs.close();
-        ps.close();
-    } catch (SQLException e) {
-        System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-    }
         return result;
     }
     // JOIN QUERY
-    public ArrayList<String[]> findApplicationStatus() {
+    public static ArrayList<String[]> findApplicationStatus(Integer applicantID) {
         ArrayList<String[]> result = new ArrayList<>();
         try {
             String query = "SELECT  AT.applicantID, AC.applicationID, E.status " +
                     "FROM Applicant AT, Application AC, EVALUATES E " +
-                    "WHERE AT.applicantID = AC.applicantID and AC.applicationID = E.applicationID";
+                    "WHERE AT.applicantID = AC.applicantID and AC.applicationID = E.applicationID and AT.applicantID = ?";
 
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query),query);
+            ps.setInt(1,applicantID);
 
             ResultSet rs = ps.executeQuery();
             String applicationID = "";
@@ -314,45 +298,6 @@ public class DatabaseConnectionHandler {
                     result.add(dummy);
             }
 
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-        }
-        return result;
-    }
-
-
-    // SELECTION QUERY
-    // choose which table and attributes (columns) to select on + values of the specific condition
-    public ArrayList<String[]> selectionTable(ArrayList<String> relations, ArrayList<String> columns) {
-        ArrayList<String[]> result = new ArrayList<>();
-        HashMap<String,String> map = new HashMap<>(); // need to populate the map in main function?
-
-        try {
-            StringBuilder allcolumns = new StringBuilder();
-            for (String column: columns) {
-                if (map.containsKey(column)) {
-                    String tablename = map.get(column); // take in the column's table
-                    allcolumns.append(tablename).append(".").append(column).append(", ");
-                }
-                if (allcolumns.length() <= 1) { // if there is only one column or less to choose from, no need the commas
-                    allcolumns.delete(allcolumns.length() - 2, allcolumns.length()); // u delete from the end to the last 2 spaces
-                }
-            }
-
-            String tableString = String.join(", " + relations); // different types of tables
-            String query = "SELECT " + allcolumns + " FROM " + tableString;
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()) {
-                String[] elements = new String[columns.size()]; // have an emtpy array of selected columns
-                for (int i = 0; i < columns.size(); i++) { // iterate through all the possible columns, i is the current column index
-                    elements[i] = rs.getString(columns.get(i)); // using the query, put the string of particular column and put it in the array of selected columns
-                }
-                result.add(elements);
-            }
             rs.close();
             ps.close();
         } catch (SQLException e) {

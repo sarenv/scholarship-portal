@@ -207,7 +207,7 @@ public class ManagementPanel extends BasePanel {
 
                 update(new Applicant(id, fn,ln,email,school,gpa));
             } catch (Exception exception) {
-                JOptionPane.showMessageDialog(this, "Parse Failed!");
+                JOptionPane.showMessageDialog(this, "Update Failed!");
             }
             infoFrame.dispose();
         });

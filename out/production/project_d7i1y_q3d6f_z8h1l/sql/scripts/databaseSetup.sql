@@ -1,17 +1,3 @@
-DROP TABLE Applicant;
-DROP TABLE Application;
-DROP TABLE Donor;
-DROP TABLE Scholarship;
-DROP TABLE Renewable;
-DROP TABLE OneTime;
-DROP TABLE  ScholarshipCommittee;
-DROP TABLE SelectionCriteria;
-DROP TABLE SUPERINTENDENT;
-DROP TABLE AppliesTo;
-DROP TABLE EVALUATES;
-DROP TABLE  REFERENCELETTER;
-
-
 
 CREATE TABLE Applicant
 (

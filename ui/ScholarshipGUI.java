@@ -2,6 +2,7 @@ package ui;
 
 import database.DatabaseConnectionHandler;
 import model.Application;
+import ui.panel.JoiningPanel;
 import ui.panel.ProjectionPanel;
 import ui.panel.ManagementPanel;
 
@@ -34,13 +35,13 @@ public class ScholarshipGUI extends JFrame {
     private ProjectionPanel projectionPanel = new ProjectionPanel(this);
     private ManagementPanel managementPanel = new ManagementPanel(this);
 
+    private JoiningPanel joiningPanel = new JoiningPanel(this);
+
     private JLabel title = new JLabel();
     //    private JLabel question = new JLabel();
     private JButton applicantButton;
     private JButton applicationButton;
     private JButton scholarshipButton;
-    private JButton committeeButton;
-    private JButton superintendentButton;
     private JButton applicationTableButton;
 
     private JButton insertButton;
@@ -51,6 +52,7 @@ public class ScholarshipGUI extends JFrame {
 
     private JButton projectionButton;
     private JButton managementButton;
+    private JButton joiningButton;
 
     public ScholarshipGUI() {
         dbHandler = new DatabaseConnectionHandler();
@@ -111,12 +113,11 @@ public class ScholarshipGUI extends JFrame {
         scholarshipButton = new JButton();
         donorButton = new JButton();
         selectioncriteriaButton = new JButton();
-        superintendentButton = new JButton();
-        committeeButton = new JButton();
         projectionButton = new JButton();
         managementButton = new JButton();
         applicantTableButton = new JButton();
         insertButton = new JButton();
+        joiningButton = new JButton();
 
 
     }
@@ -137,8 +138,7 @@ public class ScholarshipGUI extends JFrame {
         getSelectioncriteriaButton();
         getApplicantTableButton();
         getApplicationTableButton();
-        getSuperintendentButton();
-        getDonorButton();
+        getJoiningButton();
         getProjectionButton();
         getManagementButton();
         getInsertButton();
@@ -466,23 +466,9 @@ public class ScholarshipGUI extends JFrame {
 
 
     /* SUPERINTENDENT */
-    public void getSuperintendentButton() {
-        superintendentButton.setPreferredSize(new Dimension(40,20));
-        superintendentButton.setText("Unused");
-        superintendentButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
-        superintendentButton.setFocusable(false);
-        mainPanel.add(superintendentButton, BorderLayout.CENTER);
-    }
 
 
     /* DONOR */
-    public void getDonorButton() {
-        donorButton.setPreferredSize(new Dimension(40,20));
-        donorButton.setText("Unused");
-        donorButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
-        donorButton.setFocusable(false);
-        mainPanel.add(donorButton, BorderLayout.CENTER);;
-    }
 
 
     // PROJECTION
@@ -535,6 +521,29 @@ public class ScholarshipGUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             getContentPane().remove(mainPanel);
             getContentPane().add(managementPanel);
+            repaint();
+            revalidate();
+        }
+    }
+
+    public void getJoiningButton() {
+        joiningButton.setPreferredSize(new Dimension(50,20));
+        joiningButton.setText("Check Applicant Status (Join)");
+        joiningButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        joiningButton.addActionListener( new gotoJoiningListener(joiningButton));
+        joiningButton.setFocusable(false);
+        mainPanel.add(joiningButton, BorderLayout.CENTER);
+    }
+
+    class gotoJoiningListener implements ActionListener {
+        private JButton jbutton;
+        public gotoJoiningListener(JButton button) {
+            this.jbutton = button;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getContentPane().remove(mainPanel);
+            getContentPane().add(joiningPanel);
             repaint();
             revalidate();
         }

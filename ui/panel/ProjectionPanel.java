@@ -72,7 +72,7 @@ public class ProjectionPanel extends BasePanel {
                     }
                 }
             }
-             ArrayList<String[]> result = DatabaseConnectionHandler.projectTables(selectionTable,columns);
+            ArrayList<ArrayList<String>> result = DatabaseConnectionHandler.projectTables(selectionTable,columns);
             generateProjection(selectionTable,result,columns);
         });
         checkboxesPanel.add(projectionButton);
@@ -80,7 +80,7 @@ public class ProjectionPanel extends BasePanel {
         checkboxesPanel.revalidate();
     }
 
-    private void generateProjection(String tableHeader, ArrayList<String[]> result, ArrayList<String> colHeader) {
+    private void generateProjection(String tableHeader, ArrayList<ArrayList<String>>result, ArrayList<String> colHeader) {
         JFrame projectionFrame = new JFrame();
         JTable table = new JTable();
         JLabel title = createTitle(tableHeader);
@@ -93,8 +93,8 @@ public class ProjectionPanel extends BasePanel {
         model.setColumnIdentifiers(columns);
         // making the rows
         if(result != null){
-            for(String[] row : result){
-                model.addRow(row);
+            for(ArrayList<String> row : result){
+                model.addRow(row.toArray());
             }
         }
         table.setModel(model);
