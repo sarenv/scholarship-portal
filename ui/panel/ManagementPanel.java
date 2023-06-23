@@ -5,17 +5,15 @@ import ui.ScholarshipGUI;
 import model.*;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class SelectionPanel extends BasePanel {
+public class ManagementPanel extends BasePanel {
     private JPanel resultsPanel;
     private JScrollPane scrollPane;
 
     private String qryString;
-    public SelectionPanel(ScholarshipGUI scholarshipGUI)  {
+    public ManagementPanel(ScholarshipGUI scholarshipGUI)  {
         super(scholarshipGUI);
     }
 
