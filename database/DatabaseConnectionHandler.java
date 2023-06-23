@@ -304,16 +304,18 @@ public class DatabaseConnectionHandler {
 
     // Division using WHERE EXISTS
     // Finding the applicants who submitted an application
-    public ArrayList<Integer> findAllApplied() {
-        ArrayList<Integer> res = new ArrayList<>();
+    public ArrayList<String[]> findAllApplied() {
+        ArrayList<String[]> res = new ArrayList<>();
         try {
             String query = "SELECT ApplicantID FROM Applicant APP WHERE EXISTS (SELECT A.ApplicantID FROM Application A WHERE APP.ApplicantID = A.ApplicantID)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                int temp = rs.getInt("ApplicantID");
-                res.add(temp);
+                String temp = String.valueOf(rs.getInt("ApplicantID"));
+                String[] temp3 = new String[1];
+                temp3[0] = temp;
+                res.add(temp3);
             }
 
             connection.commit();
@@ -333,13 +335,13 @@ public class DatabaseConnectionHandler {
     public ArrayList<String[]> findminGPAforMajor() {
         ArrayList<String[]> res = new ArrayList<>();
         try {
-            String query = "SELECT major, MIN(minimumGPA) FROM SELECTIONCRITERIA GROUP BY major";
+            String query = "SELECT major, Min(minimumGPA) AS GPA FROM SELECTIONCRITERIA SC GROUP BY major";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 String temp1 = rs.getString("major");
-                String temp2 = String.valueOf(rs.getInt("minimumGPA"));
+                String temp2 = String.valueOf(rs.getFloat("GPA"));
                 String[] temp3 = new String[2];
                 temp3[0] = temp1;
                 temp3[1] = temp2;
@@ -364,13 +366,13 @@ public class DatabaseConnectionHandler {
     public ArrayList<String[]> findAvgGPAWhereHigher() {
         ArrayList<String[]> res = new ArrayList<>();
         try {
-            String query = "SELECT applicantSchool, Avg(applicantGPA) FROM Applicant GROUP BY applicantSchool HAVING Avg(applicantGPA) > (SELECT Avg(applicantGPA) FROM Applicant)";
+            String query = "SELECT applicantSchool, Avg(applicantGPA) AS GPA FROM Applicant GROUP BY applicantSchool HAVING Avg(applicantGPA) > (SELECT Avg(applicantGPA) FROM Applicant)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 String temp1 = rs.getString("applicantSchool");
-                String temp2 = String.valueOf(rs.getInt("applicantGPA"));
+                String temp2 = String.valueOf(rs.getInt("GPA"));
                 String[] temp3 = new String[2];
                 temp3[0] = temp1;
                 temp3[1] = temp2;
