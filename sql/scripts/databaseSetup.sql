@@ -214,10 +214,10 @@ INSERT INTO AppliesTo VALUES(67492,222118,45636,1002);
 
 
 INSERT   INTO SelectionCriteria VALUES (001, 3.20, 'Computer Science', 30000);
-INSERT  INTO SelectionCriteria VALUES(002, 4.00, 'Computer Science', NULL);
-INSERT INTO SelectionCriteria VALUES(003,  3.00,'Accounting', NULL);
+INSERT  INTO SelectionCriteria VALUES(002, 4.00, 'Computer Science', 30000);
+INSERT INTO SelectionCriteria VALUES(003,  3.00,'Accounting', 30000);
 INSERT  INTO SelectionCriteria VALUES(004,  2.40,'History', 10000);
-INSERT  INTO SelectionCriteria VALUES(011,  4.0,'Political Science', NULL);
+INSERT  INTO SelectionCriteria VALUES(011,  4.0,'Political Science', 30000);
 
 INSERT INTO ScholarshipCommittee VALUES (123);
 INSERT INTO ScholarshipCommittee VALUES (234);

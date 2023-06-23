@@ -20,6 +20,11 @@ public class ScholarshipGUI extends JFrame {
     private JPanel mainPanel = new JPanel();;
     private JPanel applicantPanel = new JPanel();
 
+    private JPanel applicationPanel = new JPanel();
+
+    private JPanel scholarshipPanel = new JPanel();
+    private JPanel SelectioncriteriaPanel = new JPanel();
+
     private ProjectionPanel projectionPanel = new ProjectionPanel(this);
     private SelectionPanel selectionPanel = new SelectionPanel(this);
 
@@ -128,37 +133,11 @@ public class ScholarshipGUI extends JFrame {
 
     //////////// ALL BUTTONS + ACTION LISTENER METHODS //////////////////////
 
-
-    public class DisplayPanel extends JPanel {
-        private JTable table;
-
-        public DisplayPanel(ArrayList<String[]> data) {
-            setLayout(new BorderLayout());
-
-            // Create table model
-            DefaultTableModel model = new DefaultTableModel();
-            table = new JTable(model);
-
-            // Add table columns
-            for (int i = 0; i < data.get(0).length; i++) {
-                model.addColumn("Column " + (i + 1));
-            }
-
-            // Add table rows
-            for (String[] row : data) {
-                model.addRow(row);
-            }
-
-            // Add table to a scroll pane
-            JScrollPane scrollPane = new JScrollPane(table);
-            add(scrollPane, BorderLayout.CENTER);
-        }
-    }
     /* APPLICANT */
     // lead to applicantPanel
     public void getApplicantButton() {
         applicantButton.setPreferredSize(new Dimension(50,20));
-        applicantButton.setText("Applicant table");
+        applicantButton.setText("Applicants who submitted an application (Divide)");
         applicantButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
         applicantButton.addActionListener(new goToApplicantListener(applicantButton));
         applicantButton.setFocusable(false);
@@ -176,10 +155,6 @@ public class ScholarshipGUI extends JFrame {
             getContentPane().remove(mainPanel);
             applicantPanel();
 
-            ArrayList<String[]> res = dbHandler.applicantTable();
-            DisplayPanel displayPanel = new DisplayPanel(res);
-
-            getContentPane().add(displayPanel);
             repaint();
             revalidate();
         }
@@ -192,10 +167,25 @@ public class ScholarshipGUI extends JFrame {
         applicantPanel.setBackground(Color.getHSBColor(66,66,66));
         applicantPanel.setPreferredSize(new Dimension(800,350));
         applicantPanel.setMaximumSize(new Dimension(800, 350));
-        JLabel title = new JLabel("Applicant table: ", JLabel.CENTER);
+        JLabel title = new JLabel("Applicants who submitted an application: ", JLabel.CENTER);
         title.setFont(new Font("Proxima Nova", Font.ITALIC, 20));
         applicantPanel.add(title, BorderLayout.CENTER);
         this.getContentPane().add(applicantPanel);
+
+        ArrayList<String[]> res = dbHandler.findAllApplied();
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.setColumnIdentifiers(new String[]{"ApplicantID"});
+        for (String[] r : res) {
+            tableModel.addRow(r);
+        }
+
+        JTable table = new JTable(tableModel);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        applicantPanel.add(scrollPane, BorderLayout.CENTER);
+
+        this.getContentPane().add(applicantPanel);
+
     }
 
 
@@ -205,10 +195,52 @@ public class ScholarshipGUI extends JFrame {
     // lead to applicationPanel
     public void getApplicationButton() {
         applicationButton.setPreferredSize(new Dimension(40,20));
-        applicationButton.setText("Application table");
+        applicationButton.setText("View minimum GPA required for each major (Having)");
         applicationButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        applicationButton.addActionListener(new goToApplicationListener(applicationButton));
         applicationButton.setFocusable(false);
         mainPanel.add(applicationButton, BorderLayout.CENTER);
+    }
+
+    class goToApplicationListener implements ActionListener {
+        private JButton jbutton;
+        public goToApplicationListener(JButton button) {
+            this.jbutton = button;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getContentPane().remove(mainPanel);
+            applicationPanel();
+
+            repaint();
+            revalidate();
+        }
+    }
+
+    public void applicationPanel() {
+        applicationPanel.setLayout(new BoxLayout(applicationPanel, BoxLayout.PAGE_AXIS));
+        applicationPanel.setBackground(Color.getHSBColor(66,66,66));
+        applicationPanel.setPreferredSize(new Dimension(800,350));
+        applicationPanel.setMaximumSize(new Dimension(800, 350));
+        JLabel title = new JLabel("Minimum GPA required for each major: ", JLabel.CENTER);
+        title.setFont(new Font("Proxima Nova", Font.ITALIC, 20));
+        applicationPanel.add(title, BorderLayout.CENTER);
+        this.getContentPane().add(applicationPanel);
+
+        ArrayList<String[]> res = dbHandler.findMinGPAForEachMajor();
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.setColumnIdentifiers(new String[]{"major", "minimumGPA"});
+        for (String[] r : res) {
+            tableModel.addRow(r);
+        }
+
+        JTable table = new JTable(tableModel);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        applicationPanel.add(scrollPane, BorderLayout.CENTER);
+
+        this.getContentPane().add(applicationPanel);
+
     }
 
 
@@ -216,10 +248,52 @@ public class ScholarshipGUI extends JFrame {
     // lead to scholarshipPanel
     public void getScholarshipButton() {
         scholarshipButton.setPreferredSize(new Dimension(40,20));
-        scholarshipButton.setText("Scholarship table");
+        scholarshipButton.setText("GPA comparison between schools (Nested)");
         scholarshipButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        scholarshipButton.addActionListener(new goToScholarshipListener(scholarshipButton));
         scholarshipButton.setFocusable(false);
         mainPanel.add(scholarshipButton, BorderLayout.CENTER);
+    }
+
+    class goToScholarshipListener implements ActionListener {
+        private JButton jbutton;
+        public goToScholarshipListener(JButton button) {
+            this.jbutton = button;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getContentPane().remove(mainPanel);
+            scholarshipPanel();
+
+            repaint();
+            revalidate();
+        }
+    }
+
+    public void scholarshipPanel() {
+        scholarshipPanel.setLayout(new BoxLayout(scholarshipPanel, BoxLayout.PAGE_AXIS));
+        scholarshipPanel.setBackground(Color.getHSBColor(66,66,66));
+        scholarshipPanel.setPreferredSize(new Dimension(800,350));
+        scholarshipPanel.setMaximumSize(new Dimension(800, 350));
+        JLabel title = new JLabel("Schools where average GPA is higher than overall average:  ", JLabel.CENTER);
+        title.setFont(new Font("Proxima Nova", Font.ITALIC, 20));
+        scholarshipPanel.add(title, BorderLayout.CENTER);
+        this.getContentPane().add(scholarshipPanel);
+
+        ArrayList<String[]> res = dbHandler.findAvgGPAWhereHigher();
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.setColumnIdentifiers(new String[]{"applicantSchool", "applicantGPA"});
+        for (String[] r : res) {
+            tableModel.addRow(r);
+        }
+
+        JTable table = new JTable(tableModel);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        scholarshipPanel.add(scrollPane, BorderLayout.CENTER);
+
+        this.getContentPane().add(scholarshipPanel);
+
     }
 
 
@@ -227,17 +301,59 @@ public class ScholarshipGUI extends JFrame {
     /* SELECTION CRITERIA */
     public void getSelectioncriteriaButton() {
         selectioncriteriaButton.setPreferredSize(new Dimension(40,20));
-        selectioncriteriaButton.setText("Selection Criteria table");
+        selectioncriteriaButton.setText("View GPA requirements for each major (Group By)");
         selectioncriteriaButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
+        selectioncriteriaButton.addActionListener(new goToSelectioncriteriaListener(selectioncriteriaButton));
         selectioncriteriaButton.setFocusable(false);
         mainPanel.add(selectioncriteriaButton, BorderLayout.CENTER);
+    }
+
+    class goToSelectioncriteriaListener implements ActionListener {
+        private JButton jbutton;
+        public goToSelectioncriteriaListener(JButton button) {
+            this.jbutton = button;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getContentPane().remove(mainPanel);
+            SelectioncriteriaPanel();
+
+            repaint();
+            revalidate();
+        }
+    }
+
+    public void SelectioncriteriaPanel() {
+        SelectioncriteriaPanel.setLayout(new BoxLayout(SelectioncriteriaPanel, BoxLayout.PAGE_AXIS));
+        SelectioncriteriaPanel.setBackground(Color.getHSBColor(66,66,66));
+        SelectioncriteriaPanel.setPreferredSize(new Dimension(800,350));
+        SelectioncriteriaPanel.setMaximumSize(new Dimension(800, 350));
+        JLabel title = new JLabel("Minimum GPA required for each Major:  ", JLabel.CENTER);
+        title.setFont(new Font("Proxima Nova", Font.ITALIC, 20));
+        SelectioncriteriaPanel.add(title, BorderLayout.CENTER);
+        this.getContentPane().add(SelectioncriteriaPanel);
+
+        ArrayList<String[]> res = dbHandler.findminGPAforMajor();
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.setColumnIdentifiers(new String[]{"major", "minimumGPA"});
+        for (String[] r : res) {
+            tableModel.addRow(r);
+        }
+
+        JTable table = new JTable(tableModel);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        SelectioncriteriaPanel.add(scrollPane, BorderLayout.CENTER);
+
+        this.getContentPane().add(SelectioncriteriaPanel);
+
     }
 
 
     /* COMMITTEE */
     public void getCommitteeButton() {
         committeeButton.setPreferredSize(new Dimension(40,20));
-        committeeButton.setText("Committee table");
+        committeeButton.setText("Unused");
         committeeButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
         committeeButton.setFocusable(false);
         mainPanel.add(committeeButton, BorderLayout.CENTER);
@@ -247,7 +363,7 @@ public class ScholarshipGUI extends JFrame {
     /* REFERENCE LETTER */
     public void getReferenceletterButton() {
         referenceletterButton.setPreferredSize(new Dimension(40,20));
-        referenceletterButton.setText("Reference Letter table");
+        referenceletterButton.setText("Unused");
         referenceletterButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
         referenceletterButton.setFocusable(false);
         mainPanel.add(referenceletterButton, BorderLayout.CENTER);
@@ -257,7 +373,7 @@ public class ScholarshipGUI extends JFrame {
     /* SUPERINTENDENT */
     public void getSuperintendentButton() {
         superintendentButton.setPreferredSize(new Dimension(40,20));
-        superintendentButton.setText("Superintendent table");
+        superintendentButton.setText("Unused");
         superintendentButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
         superintendentButton.setFocusable(false);
         mainPanel.add(superintendentButton, BorderLayout.CENTER);
@@ -267,7 +383,7 @@ public class ScholarshipGUI extends JFrame {
     /* DONOR */
     public void getDonorButton() {
         donorButton.setPreferredSize(new Dimension(40,20));
-        donorButton.setText("Donor table");
+        donorButton.setText("Unused");
         donorButton.setFont(new Font("Proxima Nova",Font.PLAIN, 15));
         donorButton.setFocusable(false);
         mainPanel.add(donorButton, BorderLayout.CENTER);;
